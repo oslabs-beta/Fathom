@@ -1,6 +1,6 @@
 import {signIn, signOut, useSession } from "next-auth/react"
 
-export const LoginHeader = () => {
+export const LoginHeader:React.FC = () => {
   const { data: sessionData } = useSession()
 
   return (
@@ -16,7 +16,7 @@ export const LoginHeader = () => {
 
       {/* sign in/out button */}
       <button
-        className="mr-2 ml-2 rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+        className="mr-2 ml-2 rounded-full bg-white/10 px-10 py-3 no-underline transition hover:bg-white/20"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
         {sessionData ? "Sign out" : "Sign in"}
