@@ -1,7 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useState } from "react"
 
-
 // TODO: define a type for InteractionBar props and import it instead of any
 export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const { data: sessionData } = useSession()
@@ -22,14 +21,11 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     console.log('the new ip', inputIP)
 
   }
-
   return (
-    <div className="navbar flex flex-auto justify-center items-center">
-      
-      <form className="mt-9 mb-5 flex items-center">
+    <div className="navbar flex flex-auto justify-center">
+      <form className="text-l mt-5 mb-5">
         {/* needs typing for the onSubmit function */}
-        <div className="btn-group">
-        <span className="mr-2 font-medium ">LoadBalancer IP:</span>
+        <span className="mr-2">LoadBalancer IP:</span>
         {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
         <input
           type="text"
@@ -37,14 +33,12 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
           placeholder={clusterIP}
           onChange={handleClusterChange}
 
-          className="input input-bordered input-accent w-full max-w-xs"
+          className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"
         />
-        <button className="btn btn-accent ml-2" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        <button className="btn ml-2 bg-info/10" onClick={handleClusterIPSubmit}>Submit New IP</button>
 
         {/* onsubmit, add things in */}
-        </div>
       </form>
-
     </div>
 
 
