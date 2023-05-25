@@ -37,7 +37,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
   }
   return (
     
-    <div className=" bg-accent/20 gap-4 rounded-xl p-2 fixed top-44">
+    <div className=" bg-accent/20 gap-4 rounded-xl p-2 top-44">
 
       <div className="flex flex-auto justify-between">
 

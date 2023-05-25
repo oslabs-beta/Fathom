@@ -22,7 +22,7 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
 
   }
   return (
-    <div className="navbar flex flex-auto justify-center fixed top-12 left-0 right-0">
+    <div className="navbar flex flex-auto justify-center top-12 left-0 right-0">
       <form className="text-l mt-8 mb-5">
         {/* needs typing for the onSubmit function */}
         {/* <span className="mr-2">LoadBalancer IP:</span> */}
