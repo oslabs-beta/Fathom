@@ -28,9 +28,7 @@ const Home: NextPage = () => {
         </h1> */}
 
         <LoginHeader />
-        {/* <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} /> */}
-
-        <InputBar />
+        <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />
         <Dashboard />
 
       </main>
