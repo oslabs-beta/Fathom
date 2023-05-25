@@ -12,7 +12,7 @@ import { useState } from "react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
-  const [clusterIP, setClusterIP] = useState("123.456.78")
+  const [clusterIP, setClusterIP] = useState("12.34.567.890")
 
   return (
     <>
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />
 
         <InputBar />
-        <Dashboard />
+        <Dashboard clusterIP={clusterIP} />
 
       </main>
     </>
