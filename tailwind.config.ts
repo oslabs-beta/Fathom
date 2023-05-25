@@ -14,7 +14,8 @@ export default {
     logs: true,
     rtl: false,
     prefix: "",
-    themes: ["luxury"],
+    themes: ["luxury",
+],
   },
 
 } satisfies Config;
