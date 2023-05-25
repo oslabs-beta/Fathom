@@ -3,8 +3,7 @@ import React from 'react';
 
 
 export function LongChart({source}) {
-    console.log(source)
-    return <iframe
+    return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4"><iframe
     src={source}
     // title={title}
     width="fill"
@@ -12,11 +11,11 @@ export function LongChart({source}) {
     frameBorder="0"
     scrolling="no"
     style={{ display: 'block' }}
-/>
+/></div>
 }
 
 export function TallChart({source}) {
-    return <iframe
+    return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4 "><iframe
     src={source}
     // title={title}
     width="fill"
@@ -24,11 +23,11 @@ export function TallChart({source}) {
     frameBorder="0"
     scrolling="no"
     style={{ display: 'block' }}
-/>
+/></div>
 }
 
 export function BoxChart({source}) {
-    return <div><iframe
+    return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4 "><iframe
         src={source}
         // title={title}
         width="fill"
