@@ -1,8 +1,8 @@
-import {signIn, signOut, useSession } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import { useState } from "react"
 
 // TODO: define a type for InteractionBar props and import it instead of any
-export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
+export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const { data: sessionData } = useSession()
   const [inputIP, setInputIP] = useState('')
 
@@ -10,7 +10,7 @@ export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
   // will give a reference to the IP address of the cluster to other components
   const handleClusterIPSubmit = (event: any) => {
     event.preventDefault()
-    setClusterIP(inputIP) 
+    setClusterIP(inputIP)
     console.log('new ip cluster', clusterIP)
   }
 
@@ -18,29 +18,29 @@ export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
     event.preventDefault()
     const newIP = (event.target as HTMLInputElement).value
     if (newIP) setInputIP(newIP)
-    console.log('the new ip' , inputIP)
-    
-  }
-    return (
-        <div className="navbar flex flex-auto justify-center">
-            <form className="ml-2 flex-1 text-xl mt-5 mb-5">
-              {/* needs typing for the onSubmit function */}
-              <span className="mr-2">LoadBalancer IP:</span> 
-              {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
-              <input 
-                type="text" 
-                id="inputClusterID"
-                placeholder={clusterIP} 
-                onChange={ handleClusterChange} 
-                
-                className="input input-bordered w-full max-w-xs ml-3 bg-info/10 rounded-xl" 
-              />
-              <button className="btn" onClick={handleClusterIPSubmit}>Submit New IP</button>
+    console.log('the new ip', inputIP)
 
-              {/* onsubmit, add things in */}
-            </form>
-      </div>
-            
-
-    )
   }
+  return (
+    <div className="navbar flex flex-auto justify-center">
+      <form className="text-l mt-5 mb-5">
+        {/* needs typing for the onSubmit function */}
+        <span className="mr-2">LoadBalancer IP:</span>
+        {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
+        <input
+          type="text"
+          id="inputClusterID"
+          placeholder={clusterIP}
+          onChange={handleClusterChange}
+
+          className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"
+        />
+        <button className="btn ml-2 bg-info/10" onClick={handleClusterIPSubmit}>Submit New IP</button>
+
+        {/* onsubmit, add things in */}
+      </form>
+    </div>
+
+
+  )
+}

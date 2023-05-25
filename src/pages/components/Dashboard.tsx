@@ -4,7 +4,7 @@ import { LongChart, TallChart, BoxChart } from './Chart'
 // pass in src here?
 const Dashboard = ({clusterIP}:any) => {
   return (
-    <div className=" bg-accent/30 gap-4 rounded-xl p-4">
+    <div className=" bg-accent/20 gap-4 rounded-xl p-4">
 
 
       <div className="flex flex-auto justify-between align-items-center ">
@@ -29,9 +29,11 @@ const Dashboard = ({clusterIP}:any) => {
       {/* Dashboard */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
 
+
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=1`}/>
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=3`}/>
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=10`}/>
+
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-10">
@@ -45,6 +47,9 @@ const Dashboard = ({clusterIP}:any) => {
     </div>
   );
 };
+
+
+
 
 export default Dashboard;
 
