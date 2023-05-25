@@ -11,7 +11,7 @@ export const LoginHeader:React.FC = () => {
       </div> 
       {/* image of the github user profile */}
 
-      {sessionData?.user.image ? <img src={sessionData.user.image} className="w-10 rounded-full"/>: ""}
+      {sessionData?.user.image ? <img src={sessionData.user.image} className="w-9 rounded-full"/>: ""}
 
       {/* sign in/out button */}
       <button
