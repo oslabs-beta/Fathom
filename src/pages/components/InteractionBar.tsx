@@ -11,14 +11,14 @@ export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
   const handleClusterIPSubmit = (event: any) => {
     event.preventDefault()
     setClusterIP(inputIP) 
-    console.log('new ip cluster', clusterIP)
+    // console.log('new ip cluster', clusterIP)
   }
 
   const handleClusterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const newIP = (event.target as HTMLInputElement).value
     if (newIP) setInputIP(newIP)
-    console.log('the new ip' , inputIP)
+    console.log('the new ip' , newIP)
     
   }
     return (
