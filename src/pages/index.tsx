@@ -12,7 +12,7 @@ import {DashBlank} from 'src/pages/components/DashBlank'
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
-  const [clusterIP, setClusterIP] = useState("12.34.567.890")
+  const [clusterIP, setClusterIP] = useState("")
 
 
   return (
@@ -29,8 +29,8 @@ const Home: NextPage = () => {
         </h1> */}
 
         <LoginHeader />
-        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />: ""} 
-        {sessionData?.user.image ? <Dashboard clusterIP={clusterIP}/>: <DashBlank/>}
+        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />: ""}  
+        {(sessionData?.user.image && clusterIP) ? <Dashboard clusterIP={clusterIP}/>: <DashBlank/>}
 
       </main>
     </>
