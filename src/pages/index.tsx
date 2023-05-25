@@ -12,7 +12,7 @@ import { useState } from "react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
-  const [clusterIP, setClusterIP] = useState("123.456.78")
+  const [clusterIP, setClusterIP] = useState("12.34.567.890")
 
   return (
     <>
@@ -22,14 +22,14 @@ const Home: NextPage = () => {
       </Head>
       {/* can be modified here for components */}
     
-      <main className="flex min-h-screen flex-col items-center justify-center ">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800  to-black">
         {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
           Fathom
         </h1> */}
     
         <LoginHeader />
         <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />
-        <Dashboard />
+        <Dashboard clusterIP={clusterIP}/>
 
       </main>
     </>
