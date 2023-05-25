@@ -12,7 +12,7 @@ import {DashBlank} from 'src/pages/components/DashBlank'
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
-  const [clusterIP, setClusterIP] = useState("12.34.567.890")
+  const [clusterIP, setClusterIP] = useState("")
   const [snapshotObj, setSnapshotObj] = useState({Current: 'now'})
   return (
     <>
