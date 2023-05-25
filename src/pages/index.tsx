@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       </Head>
       {/* can be modified here for components */}
     
-      <main className="flex min-h-screen flex-col items-center justify-center ">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800  to-black">
         {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
           Fathom
         </h1> */}
