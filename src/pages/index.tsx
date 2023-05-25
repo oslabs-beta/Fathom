@@ -14,6 +14,29 @@ const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const [clusterIP, setClusterIP] = useState("12.34.567.890")
 
+  // hook example on how to destructure an array of the snapshots,
+  // and a refetching function
+  const {data: snapshots, refetch:refetchSnaps} = api.snapshot.getAll.useQuery()
+  
+  // hook example of new Mutation - 
+  // call using  createNewSnapshot.mutate({unixtime:'newval'})
+  const createNewSnapshot = api.snapshot.createNew.useMutation({
+    onSuccess:()=>{
+      refetchSnaps() // add void?
+    }
+  })
+  
+  const checkProcedures = async () => {  
+    console.log('snaps initially',snapshots)
+    
+    // can do:
+    createNewSnapshot.mutate({
+      unixtime:'1000099288'
+    })
+  refetchSnaps()
+  console.log('snaps later',snapshots)
+}
+
   return (
     <>
       <Head>
@@ -21,12 +44,12 @@ const Home: NextPage = () => {
         <meta name="description" content="dashboard for all your kubernetes needs" />
       </Head>
       {/* can be modified here for components */}
-    
+      <button onClick={(e)=>{checkProcedures()}}>blah</button>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800  to-black">
         {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
           Fathom
         </h1> */}
-    
+        
         <LoginHeader />
         <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />
         <Dashboard clusterIP={clusterIP}/>
