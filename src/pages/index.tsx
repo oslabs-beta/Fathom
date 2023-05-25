@@ -13,7 +13,7 @@ import { useState } from "react";
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const [clusterIP, setClusterIP] = useState("12.34.567.890")
-
+  const [snapshotObj, setSnapshotObj] = useState({Current: 'now'})
   return (
     <>
       <Head>
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
 
         <LoginHeader />
         <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />
-        <Dashboard clusterIP={clusterIP}/>
+        <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} />
 
       </main>
     </>

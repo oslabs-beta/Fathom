@@ -21,6 +21,9 @@ export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
     console.log('the new ip' , inputIP)
     
   }
+
+
+
     return (
         <div className="navbar flex flex-auto justify-center">
             <form className="ml-2 flex-1 text-xl mt-5 mb-5">
