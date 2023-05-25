@@ -5,8 +5,8 @@ export const LoginHeader:React.FC = () => {
 
   return (
     //this is the component
-    <div className="navbar bg-info/10">
-      <div className="ml-2 flex-1 text-2xl text-info/70 font-extrabold">
+    <div className="navbar bg-gradient-to-b from-gray-800 to-base-100/60">
+      <div className="ml-2 flex-1 text-2xl font-bold">
         Fathom 
       </div> 
       {/* image of the github user profile */}

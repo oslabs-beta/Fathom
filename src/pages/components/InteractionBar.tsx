@@ -10,7 +10,7 @@ export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
 
     return (
         <div className="navbar flex flex-auto justify-center">
-            <div className="ml-2  text-xl mt-5 mb-5">
+            <div className="ml-2 text-xl mt-5 mb-5">
               {/* needs typing for the onSubmit function */}
               LoadBalancer IP: <input type="text" placeholder={clusterIP} className="ml-3 bg-info/10 rounded-xl" onSubmit={()=>{}}/>
               {/* onsubmit, add things in */}
