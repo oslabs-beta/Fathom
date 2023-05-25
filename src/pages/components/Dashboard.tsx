@@ -8,11 +8,14 @@ import { LongChart, TallChart, BoxChart } from './Chart'
 const Dashboard = ({ clusterIP }) => {
   const { data: sessionData } = useSession();
 
-  // const dashContent = []
+  if (!clusterIP) {
+    return <DashBlank />;
+  }
 
 
   return (
-    <div className=" bg-accent/20 gap-4 rounded-xl p-2">
+    
+    <div className=" bg-accent/20 gap-4 rounded-xl p-2 fixed top-44">
 
       <div className="flex flex-auto justify-between">
 
@@ -31,11 +34,11 @@ const Dashboard = ({ clusterIP }) => {
         <div className="mr-2">
           <button className="btn btn-ghost">Snapshot</button>
         </div>
-
       </div>
 
 
-      <div className="flex flex-auto justify-between align-items-center ">
+
+      <div className="flex flex-auto justify-between align-items-center">
         <div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
             <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=1`} />
