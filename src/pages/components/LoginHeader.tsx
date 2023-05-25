@@ -15,7 +15,7 @@ export const LoginHeader:React.FC = () => {
 
       {/* sign in/out button */}
       <button
-        className="mr-4 ml-4 rounded-xl bg-white/10 px-8 py-2 no-underline transition hover:bg-info/30"
+        className="btn mr-4 ml-4 rounded-xl bg-white/10  no-underline transition"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
         {sessionData ? "Sign out" : "Sign in"}

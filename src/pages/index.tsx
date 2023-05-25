@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import React from 'react';
 import Dashboard from './components/Dashboard';
-import InputBar from './components/InputBar'
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
@@ -13,6 +12,7 @@ import { useState } from "react";
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const [clusterIP, setClusterIP] = useState("12.34.567.890")
+
 
   return (
     <>

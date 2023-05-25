@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useState } from "react"
 
+
 // TODO: define a type for InteractionBar props and import it instead of any
 export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const { data: sessionData } = useSession()
@@ -21,6 +22,7 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     console.log('the new ip', inputIP)
 
   }
+
   return (
     <div className="navbar flex flex-auto justify-center">
       <form className="text-l mt-5 mb-5">
@@ -38,6 +40,7 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
         <button className="btn ml-2 bg-info/10" onClick={handleClusterIPSubmit}>Submit New IP</button>
 
         {/* onsubmit, add things in */}
+
       </form>
     </div>
 

@@ -1,8 +1,10 @@
 import React from 'react';
 import { LongChart, TallChart, BoxChart } from './Chart'
 
+
 // pass in src here?
 const Dashboard = ({clusterIP}:any) => {
+
   return (
     <div className=" bg-accent/20 gap-4 rounded-xl p-4">
 
