@@ -21,18 +21,15 @@ const Home: NextPage = () => {
         <meta name="description" content="dashboard for all your kubernetes needs" />
       </Head>
       {/* can be modified here for components */}
-      <div>
-      </div>
-      <main className="flex min-h-screen flex-col items-center justify-center">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
+    
+      <main className="flex min-h-screen flex-col items-center justify-center ">
+        {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
           Fathom
-        </h1>
+        </h1> */}
 
         <LoginHeader />
         <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />
-
-        <InputBar />
-        <Dashboard clusterIP={clusterIP} />
+        <Dashboard clusterIP={clusterIP}/>
 
       </main>
     </>
