@@ -24,10 +24,12 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   }
 
   return (
-    <div className="navbar flex flex-auto justify-center">
-      <form className="text-l mt-5 mb-5">
+    <div className="navbar flex flex-auto justify-center items-center">
+      
+      <form className="mt-9 mb-5 flex items-center">
         {/* needs typing for the onSubmit function */}
-        <span className="mr-2">LoadBalancer IP:</span>
+        <div className="btn-group">
+        <span className="mr-2 font-medium ">LoadBalancer IP:</span>
         {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
         <input
           type="text"
@@ -35,13 +37,14 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
           placeholder={clusterIP}
           onChange={handleClusterChange}
 
-          className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"
+          className="input input-bordered input-accent w-full max-w-xs"
         />
-        <button className="btn ml-2 bg-info/10" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        <button className="btn btn-accent ml-2" onClick={handleClusterIPSubmit}>Submit New IP</button>
 
         {/* onsubmit, add things in */}
-
+        </div>
       </form>
+
     </div>
 
 
