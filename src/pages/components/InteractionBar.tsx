@@ -5,20 +5,20 @@ import { useState } from "react"
 export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
   const { data: sessionData } = useSession()
   const [inputIP, setInputIP] = useState('')
-    // need to manage state: one of the props is likely to be a reference to state in the parent 
-    // will give a reference to the IP address of the cluster to other components
+
+  // need to manage state: one of the props is likely to be a reference to state in the parent 
+  // will give a reference to the IP address of the cluster to other components
   const handleClusterIPSubmit = (event: any) => {
     event.preventDefault()
-    const newIP = (event.target as HTMLButtonElement).value
-    if (newIP) setClusterIP(inputIP)
-    console.log(inputIP)
+    setClusterIP(inputIP) 
+    console.log('new ip cluster', clusterIP)
   }
 
   const handleClusterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const newIP = (event.target as HTMLInputElement).value
-    console.log('the new ip' , newIP)
     if (newIP) setInputIP(newIP)
+    console.log('the new ip' , inputIP)
     
   }
     return (
@@ -31,7 +31,7 @@ export const InteractionBar:any = ( { clusterIP, setClusterIP }:any ) => {
                 type="text" 
                 id="inputClusterID"
                 placeholder={clusterIP} 
-                onSubmit={ handleClusterChange} 
+                onChange={ handleClusterChange} 
                 
                 className="input input-bordered w-full max-w-xs" 
               />
