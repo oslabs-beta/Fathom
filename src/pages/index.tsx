@@ -23,7 +23,7 @@ const Home: NextPage = () => {
       <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP}/>
 
       <main className="flex min-h-screen flex-col items-center justify-center">
-        <h1 className="text-5xl font-extrabold">hello world</h1>
+        <h1 className="text-5xl font-extrabold">hello world{clusterIP}</h1>
       </main>
     </>
   );
