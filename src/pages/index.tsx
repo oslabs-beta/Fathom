@@ -2,18 +2,18 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import React from 'react';
 import Dashboard from './components/Dashboard';
-import InputBar from './components/InputBar'
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
 import { useState } from "react";
+import {DashBlank} from 'src/pages/components/DashBlank'
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
-  // old connection/needs to be updated with sunjin  state changes
-  const [clusterIP, setClusterIP] = useState("12.34.567.890")
+
+  const [clusterIP, setClusterIP] = useState("")
 
   // tRPC EXAMPLE START
   // hook example on how to destructure an array of the snapshots,
@@ -51,14 +51,18 @@ const Home: NextPage = () => {
       </Head>
       {/* extra button to test tRPC hooks */}
       <button onClick={(e)=>{checkProcedures()}}>blah</button>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800  to-black">
+
+      {/* can be modified here for components */}
+    
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800 to-black pt-12">
+
         {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
           Fathom
         </h1> */}
         
         <LoginHeader />
-        <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />
-        <Dashboard clusterIP={clusterIP}/>
+        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />: ""}  
+        {(sessionData?.user.image && clusterIP) ? <Dashboard clusterIP={clusterIP}/>: <DashBlank/>}
 
       </main>
     </>
