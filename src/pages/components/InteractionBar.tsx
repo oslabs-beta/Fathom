@@ -23,7 +23,11 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   }
   return (
     <div className="navbar flex flex-auto justify-center top-12 left-0 right-0">
+      {/* navbar styling, flex layout, centers content */}
+
+      {/* Form container */}
       <form className="text-l mt-8 mb-5">
+
         {/* needs typing for the onSubmit function */}
         {/* <span className="mr-2">LoadBalancer IP:</span> */}
         {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
@@ -35,9 +39,11 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
 
           className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"
         />
-        <button className="btn ml-2 bg-info/10" onClick={handleClusterIPSubmit}>Submit New IP</button>
 
-        {/* onsubmit, add things in */}
+        {/* Button for submitting a new Cluster IP */}
+        <button className="btn ml-2 bg-info/10" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        {/* onsubmit, render dashboard */}
+
       </form>
     </div>
   )
