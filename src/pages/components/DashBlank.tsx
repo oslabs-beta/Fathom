@@ -1,4 +1,4 @@
-// component which displays when user is not logged in and/or the cluster IP has not been entered
+// Component which displays when user is not logged in and/or the cluster IP has not been entered
 
 export function DashBlank() {
     return (

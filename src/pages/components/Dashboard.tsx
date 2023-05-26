@@ -4,7 +4,7 @@ import { DashBlank } from './DashBlank'
 import { LongChart, TallChart, BoxChart } from './Chart'
 import { useState } from "react";
 
-// pass in src here?
+// Component which displays Dashboard or DashBlank based on login and/or Cluster IP availability
 const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
@@ -36,13 +36,12 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
     setCurrentTimeStamp(changedTimeStamp)
     // console.log('currentTimeStamp', currentTimeStamp)
   }
+
   return (
-    
     <div className=" bg-accent/20 gap-4 rounded-xl p-2 top-44">
 {/* sets background color, gap size, rounded corners, and padding */}
       <div className="flex flex-auto justify-between">
         {/* applies flex layout and justifies content*/}
-
 
         {/* dropdown menu   */}
 
