@@ -1,6 +1,5 @@
 import React from 'react';
 import { signIn, signOut, useSession } from "next-auth/react"
-import { DashContent } from './DashContent';
 import { DashBlank } from './DashBlank'
 import { LongChart, TallChart, BoxChart } from './Chart'
 import { useState } from "react";
@@ -12,8 +11,10 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
   const { data: sessionData } = useSession();
 
   if (!clusterIP) {
+    // if the Cluster IP has not been entered, render the blank dashboard (Fathom logo)
     return <DashBlank />;
   }
+
   // eventHandlers 
 
 
@@ -38,8 +39,9 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
   return (
     
     <div className=" bg-accent/20 gap-4 rounded-xl p-2 top-44">
-
+{/* sets background color, gap size, rounded corners, and padding */}
       <div className="flex flex-auto justify-between">
+        {/* applies flex layout and justifies content*/}
 
 
         {/* dropdown menu   */}
@@ -74,6 +76,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
         {/* snapshot button */}
           <div className="mr-2">
+            {/* right margin of 2 units */}
             <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
           </div>
           
@@ -81,20 +84,21 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
       </div>
     
      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
-
+    {/* grid layout - 1 column, gap size, columns, responsive settings */}
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=1`}/>
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=3`}/>
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=10`}/>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-10">
+      {/* grid layout - 1 column, gap size, columns, responsive settings */}
         <TallChart source={`http://${clusterIP}/d-solo/85a562078cdf77779eaa1add43ccec1e/kubernetes-compute-resources-namespace-pods?orgId=1&refresh=10s&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=17`}/>
         <LongChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=3`}/>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-10">
+      {/* grid layout - 1 column, gap size, columns, responsive settings */}
         <TallChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=4`}/>
-
 
 
       {/* <div className="flex flex-auto justify-between align-items-center">
