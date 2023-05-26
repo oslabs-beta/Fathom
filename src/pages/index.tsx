@@ -9,6 +9,7 @@ import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
 import { useState } from "react";
 import {DashBlank} from 'src/pages/components/DashBlank'
+import SecondDashboard from "./components/SecondDashboard";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -32,9 +33,14 @@ const Home: NextPage = () => {
         {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />: ""}  
         {
           (sessionData?.user.image && clusterIP) 
-            ? <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} /> 
+            ? ( <div><Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} /> 
+              
+            </div>) 
             : <DashBlank/>
         }
+          {/* <SecondDashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj}/> */}
+        
+      
       </main>
     </>
   );

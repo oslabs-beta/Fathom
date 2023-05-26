@@ -43,7 +43,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
 
         {/* dropdown menu   */}
-
+           {/* need this function happening outside(in the parent component) */}
         <div className="dropdown dropdown-right ml-2">
           <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
           <select

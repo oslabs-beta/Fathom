@@ -40,7 +40,5 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
         {/* onsubmit, add things in */}
       </form>
     </div>
-
-
   )
 }
