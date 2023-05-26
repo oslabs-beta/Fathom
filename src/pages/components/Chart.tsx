@@ -8,7 +8,7 @@ import React from 'react';
 
 export function LongChart({ source }) {
     return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4">
-{/* Flex container with a maximum width, column layout, gap between elements, rounded corners, and padding */}
+        {/* Flex container with max width, columns, gap between elements, rounded corners, and padding */}
 
         <iframe
             src={source}
@@ -22,7 +22,7 @@ export function LongChart({ source }) {
 }
 
 export function TallChart({ source }) {
-{/* Flex container with a maximum width, column layout, gap between elements, rounded corners, and padding */}
+    {/* Flex container with max width, columns, gap between elements, rounded corners, and padding */ }
     return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4 "><iframe
         src={source}
         width="fill"
@@ -34,7 +34,7 @@ export function TallChart({ source }) {
 }
 
 export function BoxChart({ source }) {
-    {/* Flex container with a maximum width, column layout, gap between elements, rounded corners, and padding */}
+    {/* Flex container with max width, columns, gap between elements, rounded corners, and padding */ }
     return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4 "><iframe
         src={source}
         // title={title}
