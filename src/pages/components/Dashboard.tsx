@@ -49,7 +49,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
         {/* applies flex layout and justifies content*/}
 
         {/* dropdown menu   */}
-
+        
         <div className="dropdown dropdown-right ml-2">
           <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
           <select
