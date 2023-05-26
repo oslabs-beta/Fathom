@@ -12,24 +12,28 @@ import { useState } from "react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
+  // old connection/needs to be updated with sunjin  state changes
   const [clusterIP, setClusterIP] = useState("12.34.567.890")
 
+  // tRPC EXAMPLE START
   // hook example on how to destructure an array of the snapshots,
   // and a refetching function
   const {data: snapshots, refetch:refetchSnaps} = api.snapshot.getAll.useQuery()
   
   // hook example of new Mutation - 
   // call using  createNewSnapshot.mutate({unixtime:'newval'})
+  // hooks into the defined api in api/routers/snapshot.ts
   const createNewSnapshot = api.snapshot.createNew.useMutation({
     onSuccess:()=>{
       refetchSnaps() // add void?
     }
   })
-  
+  // handlesubmit helper that uses the createNewSnapshot mutation/hook
   const checkProcedures = async () => {  
     console.log('snaps initially',snapshots)
     
-    // can do:
+    // creates new snapshot with that timestamp
+    // NOTE: userId is read automatically from the context(see snapshot.ts>createNew)
     createNewSnapshot.mutate({
       unixtime:'1000099288'
     })
@@ -37,13 +41,15 @@ const Home: NextPage = () => {
   console.log('snaps later',snapshots)
 }
 
+  // tRPC EXAMPLE END
+
   return (
     <>
       <Head>
         <title>Fathom for Kubernetes</title>
         <meta name="description" content="dashboard for all your kubernetes needs" />
       </Head>
-      {/* can be modified here for components */}
+      {/* extra button to test tRPC hooks */}
       <button onClick={(e)=>{checkProcedures()}}>blah</button>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800  to-black">
         {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">

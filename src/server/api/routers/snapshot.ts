@@ -7,6 +7,7 @@ import {
 } from "~/server/api/trpc";
 
 export const snapshotRouter = createTRPCRouter({
+  // test procedure for checking that snapshot.ts is imported
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(({ input }) => {
@@ -15,9 +16,11 @@ export const snapshotRouter = createTRPCRouter({
       };
     }),
 
+    // queries and returns all snapshots
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.snapshot.findMany()
   }),
+
   // change to private procedure when working
   // new procudure: takes an object with timestamp info
   createNew: protectedProcedure
