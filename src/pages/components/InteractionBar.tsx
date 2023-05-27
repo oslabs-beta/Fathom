@@ -46,7 +46,5 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
 
       </form>
     </div>
-
-
   )
 }
