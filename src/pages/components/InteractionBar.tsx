@@ -7,9 +7,10 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const [inputIP, setInputIP] = useState('')
   const inputRef = useRef(null);
 
+// Update the input field value when inputIP changes
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.value = inputIP; // Update the input field value when inputIP changes
+      inputRef.current.value = inputIP; 
     }
   }, [inputIP]);
 
@@ -37,7 +38,6 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
       <form className="text-l mt-8 ">
 
         {/* needs typing for the onSubmit function */}
-        {/* <span className="mr-2">LoadBalancer IP:</span> */}
         {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
         <input
           type="text"
