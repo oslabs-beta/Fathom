@@ -28,9 +28,10 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
     obj[formattedDate] = unixTimeStamp  
     setSnapshotObj(obj)
     console.log('new snapshotObj', snapshotObj)
+    //update db
   }
 
-  // event handler to set currentTimeStamp state to option we choose on the dashboard 
+  // event handler to set currentTimeStamp state to option we choose on the dropdown 
   const handleDashboardChange = (event: any) => {
     event.preventDefault()
     const changedTimeStamp = event.target.value
@@ -67,17 +68,17 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
         </div>
 
 
-      {/* old ul dropdown  */}
-        {/* <div className="dropdown dropdown-right ml-2 " >
-          <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
-          <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70">
-            {snapshotObj.map(el => {
-              return (
-                <li><a>{Object.keys(el)[0]}</a></li>
-              )
-            })}
-          </ul>
-        </div> */}
+        {/* old ul dropdown  */}
+          {/* <div className="dropdown dropdown-right ml-2 " >
+            <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
+            <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70">
+              {snapshotObj.map(el => {
+                return (
+                  <li><a>{Object.keys(el)[0]}</a></li>
+                )
+              })}
+            </ul>
+          </div> */}
 
     {/* added onclick to update snapshotObj with current time to snapshot button  
     TODO: add snapshots to database */}

@@ -12,7 +12,7 @@ import { useState } from "react";
 // pass in src here?
 const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
-  const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
+  const [currentTimeStamp, setCurrentTimeStamp] = useState('')
   const { data: sessionData } = useSession();
 
   // Faisal: added this state here to control the display of the dashboard
