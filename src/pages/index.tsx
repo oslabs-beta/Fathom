@@ -34,8 +34,8 @@ const Home: NextPage = () => {
         {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />: ""}  
         {
           (sessionData?.user.image && clusterIP) 
-            ? ( <div> <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} /> 
-                      <SecondDashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj}/>      
+            ? ( <div> <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1}/> 
+                      <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2}/>      
                 </div>) 
             : ""
         }
