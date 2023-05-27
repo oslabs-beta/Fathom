@@ -9,6 +9,8 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
   // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
+  // added labelName state 
+  const [labelName, setLabelName] = useState('')
   const { data: sessionData } = useSession();
 
   if (!clusterIP) {
@@ -18,19 +20,21 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
   // eventHandlers 
 
-  // event handler to add a property in snapshotObj with format:      M/D/Y Time: Unix Time
+  // add a property in snapshotObj 
   const handleSnapshotSubmit = (event: any) => {
     event.preventDefault()
     const unixTimeStamp = Date.now();
     const date = new Date(unixTimeStamp);
     const formattedDate = date.toLocaleString()
     const obj = { ...snapshotObj }
-    obj[formattedDate] = unixTimeStamp  
+  // if labelName exists add a property into snapshotObj    labelName: Unix Time  otherwise add a property as    M/D/Y Time: Unix Time
+  console.log(labelName)
+    labelName ? obj[labelName] = unixTimeStamp : obj[formattedDate] = unixTimeStamp  
     setSnapshotObj(obj)
     console.log('new snapshotObj', snapshotObj)
   }
 
-  // event handler to set currentTimeStamp state to option we choose on the dropbown
+  // set currentTimeStamp state to option we choose on the dropbown
   const handleDashboardChange = (event: any) => {
     event.preventDefault()
     const changedTimeStamp = event.target.value
@@ -38,6 +42,12 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
     // console.log('changedTimeStamp', changedTimeStamp)
     setCurrentTimeStamp(changedTimeStamp)
     // console.log('currentTimeStamp', currentTimeStamp)
+  }
+
+  // set labelName to our input 
+  const handleLabelChange = (event: any) => {
+    event.preventDefault()
+    setLabelName(event.target.value)
   }
 
   return (
@@ -54,7 +64,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
           <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
           <select
             tabIndex={0}
-            className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
+            className="dropdown-content shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
             onChange={handleDashboardChange}
           >
             {/* creates all the options in our dropdown from our snapshotObj */}
@@ -64,6 +74,10 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
               )
             })} 
           </select>
+        </div>
+
+        <div>
+          <p>Cluster IP: {clusterIP} {}</p>
         </div>
 
 
@@ -81,10 +95,18 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
     {/* added onclick to update snapshotObj with current time to snapshot button  
     TODO: add snapshots to database */}
+
+
         {/* snapshot button */}
           <div className="mr-2">
+        <form action="">
+          <input type="text"
+          placeholder='Snapshot Label' 
+          onChange={handleLabelChange}
+          className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"/>
             {/* right margin of 2 units */}
             <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
+        </form>
           </div>
           
 
