@@ -46,11 +46,11 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
           onChange={handleClusterChange}
           defaultValue={inputIP} // Set the default value of the input field
           ref={inputRef} // Assign the ref to the input field
-          className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"
+          className="input input-bordered max-h-xs max-w-xs bg-info/5 rounded-xl"
         />
 
         {/* Button for submitting a new Cluster IP */}
-        <button className="btn ml-2 bg-info/10" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition text-info" onClick={handleClusterIPSubmit}>Submit New IP</button>
         {/* onsubmit, render dashboard */}
 
       </form>
