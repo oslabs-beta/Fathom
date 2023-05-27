@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react"
-// import Image from 'next/image';
+import Image from 'next/image';
+import icon from '/src/pages/assets/Fathom-text-gradient.png'
 
 export const LoginHeader: React.FC = () => {
   const { data: sessionData } = useSession()
@@ -11,21 +12,22 @@ export const LoginHeader: React.FC = () => {
       {/* gradient background, fixed position, span entire top of page, padding */}
 
       {/* Future location of logo */}
-       {/* <Image
-          src="/src/pages/assets/fathom2-white.png"
-          alt="Fathom icon"
-          width={60}
-          height={60}
-        /> */}
+  
 
-      <div className="ml-2 flex-1 text-3xl font-bold">
+      <div className="ml-3 mt-3 flex-1 text-3xl font-bold">
       {/* margin, flex layout with flex-grow, text size and bold font */}
-        <span className="ml-2 bg-gradient-to-br from-info to-blue-gray-800 bg-clip-text text-transparent"> Fathom </span>
+        {/* <span className="ml-2 bg-gradient-to-br from-info to-blue-gray-800 bg-clip-text text-transparent"> Fathom </span> */}
           {/* margin, gradient background, text clipping */}
+          <Image
+          src={icon}
+          alt="fathom-icon"
+          width={110}
+          height={80}
+        />
       </div>
 
       {/* image of the github user profile */}
-      {sessionData?.user.image ? <img src={sessionData.user.image} className="w-9 rounded-full " /> : ""}
+      {sessionData?.user.image ? <img src={sessionData.user.image} className="w-10 rounded-full " /> : ""}
 
       {/* sign in/out button */}
       <button

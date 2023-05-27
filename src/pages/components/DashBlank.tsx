@@ -2,9 +2,9 @@
 
 export function DashBlank() {
     return (
-        <div className="mt-60 text-center mb-60 text-accent">
+        <div className="mt-60 text-center mb-60 text-info/20">
             {/* margin, flex, font style, centers all text */}          
-             <i>no dashboard to display</i>
+             No Dashboard to Display
             
         </div>
     );
