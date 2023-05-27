@@ -1,7 +1,7 @@
 import React from 'react';
 import { signIn, signOut, useSession } from "next-auth/react"
-
-import { LongChart, TallChart, BoxChart } from './Chart'
+import ChartContainer from './ChartContainer'
+import { Chart } from './Chart'
 import { useState } from "react";
 
 // Component which displays Dashboard or DashBlank based on login and/or Cluster IP availability
@@ -37,7 +37,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
   }
 
   return (
-    <div className=" bg-accent/20 gap-4 rounded-xl p-2 top-44">
+    <div className=" bg-accent/20 rounded-xl p-2 mt-5">
 {/* sets background color, gap size, rounded corners, and padding */}
       <div className="flex flex-auto justify-between">
 
@@ -54,12 +54,16 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
             onChange={handleDashboardChange}
           >
             {/* creates all the options in our dropdown from our snapshotObj */}
-            {Object.keys(snapshotObj).map(el => {
-                  
+            { (dashNum === 2) ? Object.keys(snapshotObj).map(el => {
+              if (el !== 'Current')
               return (
                 <option value={snapshotObj[el]}>{el}</option>
               )
-            })} 
+            }) : Object.keys(snapshotObj).map(el => {
+              return (
+                <option value={snapshotObj[el]}>{el}</option>
+              )
+            }) } 
           </select>
         </div>
 
@@ -75,12 +79,11 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
             })}
           </ul>
         </div> */}
-
+    
     {/* added onclick to update snapshotObj with current time to snapshot button  
     TODO: add snapshots to database */}
         {/* snapshot button */}
-         {
-          dashNum === 1 ? <div className="mr-2">
+         {dashNum === 1 ? <div className="mr-2">
           {/* right margin of 2 units */}
           <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
         </div> : ''
@@ -90,25 +93,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
 
       </div>
     {/* refactored iframe links for clusterIP, timestamp inputs */}
-     {  <div>
-     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
-    {/* grid layout - 1 column, gap size, columns, responsive settings */}
-        <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=1`}/>
-        <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=3`}/>
-        <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=10`}/>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-10">
-      {/* grid layout - 1 column, gap size, columns, responsive settings */}
-        <TallChart source={`http://${clusterIP}/d-solo/85a562078cdf77779eaa1add43ccec1e/kubernetes-compute-resources-namespace-pods?orgId=1&refresh=10s&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=17`}/>
-        <LongChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=3`}/>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-10">
-      {/* grid layout - 1 column, gap size, columns, responsive settings */}
-        <TallChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=4`}/>
-      </div>
-    </div>}
+     { (dashNum === 2 && Object.keys(snapshotObj).length > 1) ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} /> : (dashNum === 1 ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp}/> : '')}
 
     </div>
   );

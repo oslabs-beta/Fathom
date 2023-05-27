@@ -26,7 +26,7 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
       {/* navbar styling, flex layout, centers content */}
 
       {/* Form container */}
-      <form className="text-l mt-8 mb-5">
+      <form className="text-l mt-8 ">
 
         {/* needs typing for the onSubmit function */}
         {/* <span className="mr-2">LoadBalancer IP:</span> */}
