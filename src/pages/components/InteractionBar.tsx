@@ -7,9 +7,10 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const [inputIP, setInputIP] = useState('')
   const inputRef = useRef(null);
 
+// Update the input field value when inputIP changes
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.value = inputIP; // Update the input field value when inputIP changes
+      inputRef.current.value = inputIP; 
     }
   }, [inputIP]);
 
@@ -30,14 +31,13 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
 
   }
   return (
-    <div className="navbar flex flex-auto justify-center top-12 left-0 right-0">
+    <div className="navbar flex flex-1 justify-center items-start top-12 left-0 right-0 mb-3">
       {/* navbar styling, flex layout, centers content */}
 
       {/* Form container */}
       <form className="text-l mt-8 ">
 
         {/* needs typing for the onSubmit function */}
-        {/* <span className="mr-2">LoadBalancer IP:</span> */}
         {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
         <input
           type="text"
