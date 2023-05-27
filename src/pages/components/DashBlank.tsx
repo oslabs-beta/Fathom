@@ -2,7 +2,7 @@
 
 export function DashBlank() {
     return (
-        <div className="mt-80 flex-1 font-bold animated-gradient">
+        <div className="mt-60 font-bold">
             {/* margin, flex, font style */}
             <div className="text-center">
                 {/* centers all text */}          

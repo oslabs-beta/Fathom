@@ -1,16 +1,24 @@
 import { signIn, signOut, useSession } from "next-auth/react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 // TODO: define a type for InteractionBar props and import it instead of any
 export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const { data: sessionData } = useSession()
   const [inputIP, setInputIP] = useState('')
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = inputIP; // Update the input field value when inputIP changes
+    }
+  }, [inputIP]);
 
   // need to manage state: one of the props is likely to be a reference to state in the parent 
   // will give a reference to the IP address of the cluster to other components
   const handleClusterIPSubmit = (event: any) => {
     event.preventDefault()
-    setClusterIP(inputIP)
+    setClusterIP(inputIP);
+    setInputIP('');
     console.log('new ip cluster', clusterIP)
   }
 
@@ -36,7 +44,8 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
           id="inputClusterID"
           placeholder="LoadBalancer IP"
           onChange={handleClusterChange}
-
+          defaultValue={inputIP} // Set the default value of the input field
+          ref={inputRef} // Assign the ref to the input field
           className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"
         />
 
