@@ -30,7 +30,7 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
 
   }
   return (
-    <div className="navbar flex flex-auto justify-center top-12 left-0 right-0">
+    <div className="navbar flex justify-center top-12 left-0 right-0 mb-3">
       {/* navbar styling, flex layout, centers content */}
 
       {/* Form container */}
