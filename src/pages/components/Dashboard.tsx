@@ -3,6 +3,7 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import ChartContainer from './ChartContainer'
 import { Chart } from './Chart'
 import { useState } from "react";
+import {DashBlank} from './DashBlank'
 
 // Component which displays Dashboard or DashBlank based on login and/or Cluster IP availability
 const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
@@ -93,7 +94,8 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
 
       </div>
     {/* refactored iframe links for clusterIP, timestamp inputs */}
-     { (dashNum === 2 && Object.keys(snapshotObj).length > 1) ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} /> : (dashNum === 1 ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp}/> : '')}
+     { (dashNum === 2 && Object.keys(snapshotObj).length > 1) ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} /> : (dashNum === 1 ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp}/> : <DashBlank/>
+)}
 
     </div>
   );
