@@ -14,6 +14,8 @@ import SecondDashboard from "./components/SecondDashboard";
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const [clusterIP, setClusterIP] = useState("")
+  // refactored snapshotArr (array of objects) to snapshotObj (object) to keep track of our snapshots in our dropdown  
+  // TODO load up snapshotObj from db according to user info  
   const [snapshotObj, setSnapshotObj] = useState({Current: 'now'})
   
   
@@ -32,7 +34,7 @@ const Home: NextPage = () => {
         </h1> */}
 
         <LoginHeader />
-       
+       {/* passed in state/setStates as props to components that update/rely on them */}
         {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />: ""}  
         {
           (sessionData?.user.image && clusterIP) 

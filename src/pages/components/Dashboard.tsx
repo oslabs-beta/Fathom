@@ -7,6 +7,7 @@ import { useState } from "react";
 // Component which displays Dashboard or DashBlank based on login and/or Cluster IP availability
 const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
+  // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
   const { data: sessionData } = useSession();
 
@@ -17,17 +18,19 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
 
   // eventHandlers 
 
-
+  // event handler to add a property in snapshotObj with format:      M/D/Y Time: Unix Time
   const handleSnapshotSubmit = (event: any) => {
     event.preventDefault()
     const unixTimeStamp = Date.now();
     const date = new Date(unixTimeStamp);
     const formattedDate = date.toLocaleString()
     const obj = { ...snapshotObj }
-    obj[formattedDate] = unixTimeStamp
+    obj[formattedDate] = unixTimeStamp  
     setSnapshotObj(obj)
     console.log('new snapshotObj', snapshotObj)
   }
+
+  // event handler to set currentTimeStamp state to option we choose on the dashboard 
   const handleDashboardChange = (event: any) => {
     event.preventDefault()
     const changedTimeStamp = event.target.value
@@ -41,6 +44,8 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
     <div className=" bg-accent/20 gap-4 rounded-xl p-2 top-44">
 {/* sets background color, gap size, rounded corners, and padding */}
       <div className="flex flex-auto justify-between">
+
+    {/* changed dropdown from unordered list to select/options to add onChange event */}
         {/* applies flex layout and justifies content*/}
 
         {/* dropdown menu   */}
@@ -52,6 +57,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
             className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
             onChange={handleDashboardChange}
           >
+            {/* creates all the options in our dropdown from our snapshotObj */}
             {Object.keys(snapshotObj).map(el => {
               return (
                 <option value={snapshotObj[el]}>{el}</option>
@@ -73,6 +79,8 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
           </ul>
         </div> */}
 
+    {/* added onclick to update snapshotObj with current time to snapshot button  
+    TODO: add snapshots to database */}
         {/* snapshot button */}
           <div className="mr-2">
             {/* right margin of 2 units */}
@@ -81,7 +89,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
           
 
       </div>
-    
+    {/* refactored iframe links for clusterIP, timestamp inputs */}
      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
     {/* grid layout - 1 column, gap size, columns, responsive settings */}
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=1`}/>
