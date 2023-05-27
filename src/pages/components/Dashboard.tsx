@@ -1,21 +1,17 @@
 import React from 'react';
 import { signIn, signOut, useSession } from "next-auth/react"
-import { DashBlank } from './DashBlank'
+
 import { LongChart, TallChart, BoxChart } from './Chart'
 import { useState } from "react";
 
 // Component which displays Dashboard or DashBlank based on login and/or Cluster IP availability
-const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
+const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
 
   // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
   const { data: sessionData } = useSession();
 
-  if (!clusterIP) {
-    // if the Cluster IP has not been entered, render the blank dashboard (Fathom logo)
-    return <DashBlank />;
-  }
-
+  
   // eventHandlers 
 
   // event handler to add a property in snapshotObj with format:      M/D/Y Time: Unix Time
@@ -59,6 +55,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
           >
             {/* creates all the options in our dropdown from our snapshotObj */}
             {Object.keys(snapshotObj).map(el => {
+                  
               return (
                 <option value={snapshotObj[el]}>{el}</option>
               )
@@ -82,14 +79,18 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
     {/* added onclick to update snapshotObj with current time to snapshot button  
     TODO: add snapshots to database */}
         {/* snapshot button */}
-          <div className="mr-2">
-            {/* right margin of 2 units */}
-            <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
-          </div>
+         {
+          dashNum === 1 ? <div className="mr-2">
+          {/* right margin of 2 units */}
+          <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
+        </div> : ''
+         } 
+          
           
 
       </div>
     {/* refactored iframe links for clusterIP, timestamp inputs */}
+     {  <div>
      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
     {/* grid layout - 1 column, gap size, columns, responsive settings */}
         <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=1`}/>
@@ -106,7 +107,9 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-10">
       {/* grid layout - 1 column, gap size, columns, responsive settings */}
         <TallChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=4`}/>
-    </div>
+      </div>
+    </div>}
+
     </div>
   );
 };
