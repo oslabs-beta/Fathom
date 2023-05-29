@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { signIn, signOut, useSession } from "next-auth/react";
 import ChartContainer from './ChartContainer';
+
 import { DashBlank } from './DashBlank';
 
 interface DashboardProps {
@@ -34,7 +35,7 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
   return (
     <>
       <div className="bg-accent/20 rounded-xl p-2 mb-6">
-        <div className="flex justify-between">
+        <div className="flex justify-between ">
           <div className="dropdown dropdown-right ml-2">
             <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
             <select
@@ -65,7 +66,7 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
         ) : (dashNum === 1 ? (
           <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} />
         ) : (
-          <DashBlank />
+          <DashBlank/>
         ))}
       </div>
     </>

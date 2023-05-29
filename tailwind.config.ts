@@ -15,6 +15,7 @@ export default {
     rtl: false,
     prefix: "",
     themes: ["luxury",
+    "dark"
 ],
   },
 

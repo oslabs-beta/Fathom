@@ -3,17 +3,25 @@
 export function DashBlank() {
     return (
         <div className="mt-60 text-center mb-60 text-info/30">
-            {/* margin, flex, font style, centers all text */}          
-             No Dashboard to Display
-            
+            {/* margin, flex, font style, centers all text */}
+            No Dashboard to Display
+
+        </div>
+    );
+}
+export function DashBlankSignedOut() {
+    return (
+        <div className="mt-60 text-center text-info/30">
+            {/* margin, flex, font style, centers all text */}
+            <div className="text-9xl font-bold bg-gradient-to-br from-info/50 bg-clip-text text-transparent bg-size-150%">
+                {/* sets text size to 9xl, gradient background */}
+                Fathom
+            </div>
+            <div className="text-xl text-info/20">
+                for Kubernetes
+            </div>
+
         </div>
     );
 }
 
-// <div className="text-9xl bg-gradient-to-br from-info/50 bg-clip-text text-transparent bg-size-150%">
-// {/* sets text size to 9xl, gradient background */}
-// Fathom
-// </div>
-// <div className="text-xl text-info/20">
-// for Kubernetes
-// </div>
