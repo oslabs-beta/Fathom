@@ -27,17 +27,23 @@ const Home: NextPage = () => {
   // hooks into the defined api in api/routers/snapshot.ts
   const createNewSnapshot = api.snapshot.createNew.useMutation({
     onSuccess:()=>{
-      refetchSnaps() // add void?
+      // refetchSnaps() // add void?
+      console.log('successfully created new snapshot')
     }
   })
   // handlesubmit helper that uses the createNewSnapshot mutation/hook
-  const checkProcedures = async () => {  
-    console.log('snaps initially',snapshots)
+  const checkSnapshot = () => {  
+    // console.log('snaps initially',snapshots)
     
+    // check the correct input then, add as a property of the data object 
+    // passed the mutate call below
+    console.log('the current state of snapshotObj', snapshotObj)
+
     // creates new snapshot with that timestamp
     // NOTE: userId is read automatically from the context(see snapshot.ts>createNew)
+    const newTimestamp = Date.now()
     createNewSnapshot.mutate({
-      unixtime:'1000099288'
+      unixtime:String(newTimestamp)
     })
   refetchSnaps()
   console.log('snaps later',snapshots)
@@ -56,11 +62,12 @@ const Home: NextPage = () => {
         <meta name="description" content="dashboard for all your kubernetes needs" />
       </Head>
       {/* extra button to test tRPC hooks */}
-      <button onClick={(e)=>{checkProcedures()}}>blah</button>
 
       {/* can be modified here for components */}
     
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800 to-black pt-12">
+      {/* MODIFY THE INPUT THAT IS READ TO ADD NEW SNAPSHOTS */}
+      <button onClick={(e)=>{checkSnapshot()}}>blah</button>
 
         {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
           Fathom
