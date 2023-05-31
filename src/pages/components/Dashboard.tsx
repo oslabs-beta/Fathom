@@ -10,8 +10,9 @@ interface DashboardProps {
   dashNum: number;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapshotObj, dashNum }) => {
+const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapshotObj, dashNum}) => {
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
+  const [displayTimeStamp, setDisplayTimeStamp] = useState('')
   const { data: sessionData } = useSession();
 
   const handleSnapshotSubmit = (event: React.FormEvent) => {
@@ -29,17 +30,19 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
     event.preventDefault();
     const changedTimeStamp = event.target.value;
     setCurrentTimeStamp(changedTimeStamp);
+    setDisplayTimeStamp(changedTimeStamp);
   };
 
   return (
     <>
       <div className="bg-accent/20 rounded-xl p-2 mb-6">
         <div className="flex justify-between ">
+          
           <div className="dropdown dropdown-right ml-2">
-            <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
+            <label tabIndex={0} className="btn m-1 ">Select Dashboard</label>
             <select
               tabIndex={0}
-              className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
+              className="dropdown-content menu shadow bg-base-100 rounded-box w-52 "
               onChange={handleDashboardChange}
             >
               {dashNum === 2 ? Object.keys(snapshotObj).map(el => {
@@ -61,9 +64,9 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
         </div>
 
         {(dashNum === 2 && Object.keys(snapshotObj).length > 1) ? (
-          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} />
+          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} displayTimeStamp={displayTimeStamp}/>
         ) : (dashNum === 1 ? (
-          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} />
+          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} displayTimeStamp={displayTimeStamp} />
         ) : (
           <DashBlank/>
         ))}
