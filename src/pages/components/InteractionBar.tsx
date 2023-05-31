@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const { data: sessionData } = useSession()
   const [inputIP, setInputIP] = useState('')
+  const [isIPValid, setIsIPValid] = useState(true);
   const inputRef = useRef(null);
 
 // Update the input field value when inputIP changes
@@ -14,13 +15,32 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     }
   }, [inputIP]);
 
+  const validateIP = (IP) => {
+    if (IP && /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(IP)) {
+      setIsIPValid(true);
+      console.log("IP VALID")
+      return true;
+    }
+    else {
+      console.log("IP INVALID")
+      return false;
+    }
+  };
+
   // need to manage state: one of the props is likely to be a reference to state in the parent 
   // will give a reference to the IP address of the cluster to other components
   const handleClusterIPSubmit = (event: any) => {
     event.preventDefault()
+    if (validateIP(inputIP)) {
     setClusterIP(inputIP);
     setInputIP('');
     console.log('new ip cluster', clusterIP)
+    console.log(typeof clusterIP)}
+
+    else {
+      setInputIP('');
+      setIsIPValid(false);
+    }
   }
 
   const handleClusterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,15 +62,16 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
         <input
           type="text"
           id="inputClusterID"
-          placeholder="LoadBalancer IP"
+          placeholder={isIPValid ? "LoadBalancer IP" : "* Invalid IP Address *"}
           onChange={handleClusterChange}
           defaultValue={inputIP} // Set the default value of the input field
           ref={inputRef} // Assign the ref to the input field
-          className="input input-bordered max-h-xs max-w-xs bg-info/5 rounded-xl"
+          className={`input input-bordered max-h-xs max-w-xs bg-info/5 rounded-xl ${isIPValid ? "" : "border-info"}`}
+
         />
 
         {/* Button for submitting a new Cluster IP */}
-        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition text-info" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition" onClick={handleClusterIPSubmit}>Submit New IP</button>
         {/* onsubmit, render dashboard */}
 
       </form>
