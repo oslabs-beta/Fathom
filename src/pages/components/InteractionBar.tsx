@@ -34,7 +34,9 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     if (validateIP(inputIP)) {
     setClusterIP(inputIP);
     setInputIP('');
-    console.log('new ip cluster', clusterIP)}
+    console.log('new ip cluster', clusterIP)
+    console.log(typeof clusterIP)}
+
     else {
       setInputIP('');
       setIsIPValid(false);

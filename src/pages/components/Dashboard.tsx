@@ -4,8 +4,8 @@ import ChartContainer from './ChartContainer';
 import { DashBlank } from './DashBlank';
 
 interface DashboardProps {
-  clusterIP: any;
-  snapshotObj: any;
+  clusterIP: string;
+  snapshotObj: object;
   setSnapshotObj: any;
   dashNum: number;
 }
