@@ -33,12 +33,6 @@ const Home: NextPage = () => {
 
   // handlesubmit helper that uses the createNewSnapshot mutation/hook
   const checkSnapshot = () => {  
-    // console.log('snaps initially',snapshots)
-    
-    // check the correct input then, add as a property of the data object 
-    // passed the mutate call below
-    console.log('the current state of snapshotObj', snapshotObj)
-
     // creates new snapshot with that timestamp
     // NOTE: userId is read automatically from the context(see snapshot.ts>createNew)
     const newTimestamp = Date.now()
@@ -47,7 +41,7 @@ const Home: NextPage = () => {
     })
 
 
-  refetchSnaps()
+  refetchSnaps() // refetch and display snapshots
   console.log('snaps later',snapshots)
 }
 
@@ -68,8 +62,8 @@ const Home: NextPage = () => {
       {/* can be modified here for components */}
     
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800 to-black pt-12">
-      {/* MODIFY THE INPUT THAT IS READ TO ADD NEW SNAPSHOTS */}
-      <button onClick={(e)=>{checkSnapshot()}}>blah</button>
+      {/* this button tests the snapshot procedures: remove when snapshot CRUD is implemented */}
+      {/* <button onClick={(e)=>{checkSnapshot()}}>blah</button> */}
 
         
         <LoginHeader />
