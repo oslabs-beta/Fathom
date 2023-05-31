@@ -2,13 +2,13 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import React from 'react';
 import Dashboard from './components/Dashboard';
-import Link from "next/link";
+// import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { api } from "~/utils/api";
+// import { api } from "~/utils/api";
 import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
 import { useState } from "react";
-import {DashBlank} from 'src/pages/components/DashBlank'
+import {DashBlankSignedOut} from 'src/pages/components/DashBlank'
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -72,7 +72,7 @@ const Home: NextPage = () => {
         <LoginHeader />
    
        {/* passed in state/setStates as props to components that update/rely on them */}
-        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} /> : ""}  
+        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP}/> : <DashBlankSignedOut/>}  
         
         {
           (sessionData?.user.image && clusterIP) 
