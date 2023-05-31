@@ -4,7 +4,7 @@ import React from 'react';
 import Dashboard from './components/Dashboard';
 // import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-// import { api } from "~/utils/api";
+import { api } from "~/utils/api";
 import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
 import { useState } from "react";
