@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   // hook example on how to destructure an array of the snapshots,
   // and a refetching function
   const {data: snapshots, refetch:refetchSnaps} = api.snapshot.getAll.useQuery()
-  
+ 
   // hook example of new Mutation - 
   // call using  createNewSnapshot.mutate({unixtime:'newval'})
   // hooks into the defined api in api/routers/snapshot.ts
@@ -29,7 +29,8 @@ const Home: NextPage = () => {
       // refetchSnaps() // add void?
       console.log('successfully created new snapshot')
     }
-  })
+  });
+
   // handlesubmit helper that uses the createNewSnapshot mutation/hook
   const checkSnapshot = () => {  
     // console.log('snaps initially',snapshots)
@@ -44,6 +45,8 @@ const Home: NextPage = () => {
     createNewSnapshot.mutate({
       unixtime:String(newTimestamp)
     })
+
+
   refetchSnaps()
   console.log('snaps later',snapshots)
 }
