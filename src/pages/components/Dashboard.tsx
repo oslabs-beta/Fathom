@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { signIn, signOut, useSession } from "next-auth/react";
 import ChartContainer from './ChartContainer';
-
 import { DashBlank } from './DashBlank';
 
 interface DashboardProps {

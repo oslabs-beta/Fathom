@@ -2,9 +2,9 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import React from 'react';
 import Dashboard from './components/Dashboard';
-import Link from "next/link";
+// import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { api } from "~/utils/api";
+// import { api } from "~/utils/api";
 import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
 import { useState } from "react";
@@ -16,7 +16,6 @@ const Home: NextPage = () => {
   // refactored snapshotArr (array of objects) to snapshotObj (object) to keep track of our snapshots in our dropdown  
   // TODO load up snapshotObj from db according to user info  
   const [snapshotObj, setSnapshotObj] = useState({Current: 'now'})
-  
 
   return (
     <>
