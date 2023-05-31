@@ -1,20 +1,17 @@
 import React from 'react';
 import { signIn, signOut, useSession } from "next-auth/react"
-import { DashBlank } from './DashBlank'
-import { LongChart, TallChart, BoxChart } from './Chart'
+import ChartContainer from './ChartContainer'
+import { Chart } from './Chart'
 import { useState } from "react";
+import { DashBlank } from './DashBlank'
 
 // Component which displays Dashboard or DashBlank based on login and/or Cluster IP availability
-const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
+const Dashboard = ({ clusterIP, snapshotObj, setSnapshotObj, dashNum }: any) => {
 
   // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
   const { data: sessionData } = useSession();
 
-  if (!clusterIP) {
-    // if the Cluster IP has not been entered, render the blank dashboard (Fathom logo)
-    return <DashBlank />;
-  }
 
   // eventHandlers 
 
@@ -25,13 +22,13 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
     const date = new Date(unixTimeStamp);
     const formattedDate = date.toLocaleString()
     const obj = { ...snapshotObj }
-    obj[formattedDate] = unixTimeStamp  
+    obj[formattedDate] = unixTimeStamp
     setSnapshotObj(obj)
     console.log('new snapshotObj', snapshotObj)
     //update db
   }
 
-  // event handler to set currentTimeStamp state to option we choose on the dropdown 
+  // event handler to set currentTimeStamp state to option we choose on the dropbown
   const handleDashboardChange = (event: any) => {
     event.preventDefault()
     const changedTimeStamp = event.target.value
@@ -42,93 +39,72 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj}:any) => {
   }
 
   return (
-    <div className=" bg-accent/20 gap-4 rounded-xl p-2 top-44">
-{/* sets background color, gap size, rounded corners, and padding */}
-      <div className="flex flex-auto justify-between">
+    <>
+      {/* tabs idea */}
+      {/* <div className="tabs mt-5 flex flex-auto justify-end">
+        <a className="tab tab-lifted tab-normal">Tab 1</a>
+        <a className="tab tab-lifted tab-normal">Tab 2</a>
+        <a className="tab tab-lifted tab-normal tab-active">Tab 3</a>
+      </div> */}
 
-    {/* changed dropdown from unordered list to select/options to add onChange event */}
-        {/* applies flex layout and justifies content*/}
-
-        {/* dropdown menu   */}
-        
-        <div className="dropdown dropdown-right ml-2">
-          <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
-          <select
-            tabIndex={0}
-            className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
-            onChange={handleDashboardChange}
-          >
-            {/* creates all the options in our dropdown from our snapshotObj */}
-            {Object.keys(snapshotObj).map(el => {
-              return (
-                <option value={snapshotObj[el]}>{el}</option>
-              )
-            })} 
-          </select>
-        </div>
-
-
-        {/* old ul dropdown  */}
-          {/* <div className="dropdown dropdown-right ml-2 " >
+      <div className=" bg-accent/20 rounded-xl p-2 mb-6">
+        {/* sets background color, gap size, rounded corners, and padding */}
+        <div className="flex justify-between">
+          {/* changed dropdown from unordered list to select/options to add onChange event */}
+          {/* applies flex layout and justifies content*/}
+         
+          {/* dropdown menu   */}
+          <div className="dropdown dropdown-right ml-2">
             <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
-            <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70">
-              {snapshotObj.map(el => {
+            <select
+              tabIndex={0}
+              className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
+              onChange={handleDashboardChange}
+            >
+
+              {/* creates all the options in our dropdown from our snapshotObj */}
+              {(dashNum === 2) ? Object.keys(snapshotObj).map(el => {
+                if (el !== 'Current')
+                  return (
+                    <option value={snapshotObj[el]}>{el}</option>
+                  )
+              }) : Object.keys(snapshotObj).map(el => {
                 return (
-                  <li><a>{Object.keys(el)[0]}</a></li>
+                  <option value={snapshotObj[el]}>{el}</option>
                 )
               })}
-            </ul>
-          </div> */}
+            </select>
+          </div>
 
-    {/* added onclick to update snapshotObj with current time to snapshot button  
+
+          {/* old ul dropdown  */}
+          {/* <div className="dropdown dropdown-right ml-2 " >
+          <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
+          <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70">
+            {snapshotObj.map(el => {
+              return (
+                <li><a>{Object.keys(el)[0]}</a></li>
+              )
+            })}
+          </ul>
+        </div> */}
+
+          {/* added onclick to update snapshotObj with current time to snapshot button  
     TODO: add snapshots to database */}
-        {/* snapshot button */}
-          <div className="mr-2">
+          {/* snapshot button */}
+          {dashNum === 1 ? <div className="mr-2">
             {/* right margin of 2 units */}
             <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
-          </div>
-          
+          </div> : ''
+          }
 
-      </div>
-    {/* refactored iframe links for clusterIP, timestamp inputs */}
-     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
-    {/* grid layout - 1 column, gap size, columns, responsive settings */}
-        <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=1`}/>
-        <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=3`}/>
-        <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=10`}/>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-10">
-      {/* grid layout - 1 column, gap size, columns, responsive settings */}
-        <TallChart source={`http://${clusterIP}/d-solo/85a562078cdf77779eaa1add43ccec1e/kubernetes-compute-resources-namespace-pods?orgId=1&refresh=10s&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=17`}/>
-        <LongChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=3`}/>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-10">
-      {/* grid layout - 1 column, gap size, columns, responsive settings */}
-        <TallChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=${currentTimeStamp}-1h&to=${currentTimeStamp}&panelId=4`}/>
-
-
-      {/* <div className="flex flex-auto justify-between align-items-center">
-        <div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">
-            <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=1`} />
-            <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=3`} />
-            <TallChart source={`http://${clusterIP}/d-solo/85a562078cdf77779eaa1add43ccec1e/kubernetes-compute-resources-namespace-pods?orgId=1&refresh=10s&from=now-1h&to=now&panelId=17`} />
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-10">
-            <TallChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=now-1h&to=now&panelId=4`} />
-            <LongChart source={`http://${clusterIP}/d-solo/bbb2a765a623ae38130206c7d94a160f/kubernetes-networking-namespace-workload?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&var-resolution=5m&var-interval=4h&from=now-1h&to=now&panelId=3`} />
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-10">
-            <BoxChart source={`http://${clusterIP}/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=10`} />
-          </div>
         </div>
-      </div> */}
-    </div>
-    </div>
+        {/* refactored iframe links for clusterIP, timestamp inputs */}
+        {(dashNum === 2 && Object.keys(snapshotObj).length > 1) ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} /> : (dashNum === 1 ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} /> : <DashBlank />
+        )}
+
+      </div>
+    </>
   );
 };
 

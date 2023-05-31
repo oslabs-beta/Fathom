@@ -9,7 +9,6 @@ import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
 import { useState } from "react";
 import {DashBlank} from 'src/pages/components/DashBlank'
-import SecondDashboard from "./components/SecondDashboard";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
@@ -69,25 +68,19 @@ const Home: NextPage = () => {
       {/* MODIFY THE INPUT THAT IS READ TO ADD NEW SNAPSHOTS */}
       <button onClick={(e)=>{checkSnapshot()}}>blah</button>
 
-        {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem] text-accent p-4">
-          Fathom
-        </h1> */}
         
         <LoginHeader />
+   
        {/* passed in state/setStates as props to components that update/rely on them */}
-        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} />: ""}  
+        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP} /> : ""}  
+        
         {
           (sessionData?.user.image && clusterIP) 
-            ? ( 
-                <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} /> 
-                &&
-                <SecondDashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj}/>      
-              ) 
-            : <DashBlank/>
+            ? ( <div> <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1}/> 
+                      <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2}/>      
+                </div>) 
+            :      ""
         }
-     
-        
-      
       </main>
     </>
   );
