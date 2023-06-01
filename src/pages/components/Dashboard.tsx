@@ -90,28 +90,27 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
             </select>
           </div>
 
+
+
+        {/* snapshot button */}
           {dashNum === 1 ? (
             <div className="mr-2">
-              <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
-            </div>
+            <form action="">
+              <input type="text"
+              placeholder='Snapshot Label' 
+              onChange={handleLabelChange}
+              className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl mr-3"/>
+                {/* right margin of 2 units */}
+                <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
+            </form>
+              </div>
+
+            // other snapshot button
+            // <div className="mr-2">
+            //   <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
+            // </div>
           ) : ''}
         </div>
-
-
-        <div>
-          <p>Cluster IP: {clusterIP} {}</p>
-        </div>
-        {/* snapshot button */}
-        <div className="mr-2">
-        <form action="">
-          <input type="text"
-          placeholder='Snapshot Label' 
-          onChange={handleLabelChange}
-          className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl"/>
-            {/* right margin of 2 units */}
-            <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
-        </form>
-          </div>
           
 
 
