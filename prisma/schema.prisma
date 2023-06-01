@@ -86,6 +86,6 @@ model Snapshot {
     user      User     @relation(fields: [userId], references: [id])
     userId    String
     label     String?
-    cluster   ClusterIP? @relation(fields: [clusterId], references: [id]) 
-    clusterId String 
+    cluster   ClusterIP? @relation(fields: [clusterIP], references: [ipAddress]) 
+    clusterIP String
 }

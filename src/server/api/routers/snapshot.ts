@@ -21,12 +21,30 @@ export const snapshotRouter = createTRPCRouter({
     return ctx.prisma.snapshot.findMany()
   }),
 
+  getByUserCluster: protectedProcedure
+    .input(z.object({ clusterIP: z.string()}))
+    
+    .query(({ ctx, input }) => {
+      return ctx.prisma.snapshot.findMany({
+        where: {
+          clusterIP: {
+            equals: '34.70.193.242'
+          },
+          AND: {
+            userId: {
+              equals: ctx.session?.user.id,
+            }
+          }
+        }
+      })
+    }),
+
   // change to private procedure when working
   // new procudure: takes an object with timestamp info
   createNew: protectedProcedure
     .input(z.object({unixtime: z.number(),
     label:z.string(),
-    clusterId:z.string()
+    clusterIP:z.string()
     }))
     .mutation(({ctx, input}) => {
     return ctx.prisma.snapshot.create({
@@ -34,7 +52,7 @@ export const snapshotRouter = createTRPCRouter({
             unixtime: input.unixtime,
             label: input.label,
             userId: ctx.session?.user.id,
-            clusterId: input.clusterId,
+            clusterIP: input.clusterIP,
         }
     })
   })

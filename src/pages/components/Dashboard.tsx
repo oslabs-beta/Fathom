@@ -26,8 +26,9 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
   const [labelName, setLabelName] = useState('')
   const { data: sessionData } = useSession();
   // const [tabIP, setTabIP] = useState('')
-  const { data: snapshots , refetch: refecthSnaps } = api.snapshot.getAll.useQuery()
-  const [currentClusterIP, setCurrentClusterIP] = useState();
+  const { data: snapshots , refetch: refetchSnaps } = api.snapshot.getAll.useQuery()
+  const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } =api.snapshot.getByUserCluster.useQuery({clusterIP: ''})
+  const [currentClusterIP, setCurrentClusterIP] = useState('34.70.193.242'); //temp
 
   const handleTabClick = (ip: string) => {
     setCurrentClusterIP(ip);
@@ -36,7 +37,8 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
   // hook to create snapshot in db
   const createNewSnapshot = api.snapshot.createNew.useMutation({
     onSuccess:()=>{
-      refecthSnaps()
+      refetchSnaps();
+      refetchfilteredSnapshots({clusterIP: currentClusterIP});
     }
   })
 
@@ -57,7 +59,7 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
     createNewSnapshot.mutate({
       unixtime: unixTimeStamp,
       label: labelName,
-      clusterId: currClusterId
+      clusterIP: currentClusterIP
     })
     console.log('new snapshotObj', snapshotObj)
   }
@@ -107,7 +109,7 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
           }
         </div> : ''}
 
-      {console.log(currentClusterIP, "DFHSLKDFJHDSF")}
+      {/* {console.log(currentClusterIP, "DFHSLKDFJHDSF")} */}
 
       <div className="bg-accent/20 rounded-xl p-2 mb-6">
         <div className="flex justify-between ">
