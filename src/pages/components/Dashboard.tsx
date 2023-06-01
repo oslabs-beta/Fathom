@@ -1,13 +1,17 @@
-import React from 'react';
-import { signIn, signOut, useSession } from "next-auth/react"
-import ChartContainer from './ChartContainer'
-import { Chart } from './Chart'
-import { useState } from "react";
-import {DashBlank} from './DashBlank'
+import React, { useState } from 'react';
+import { signIn, signOut, useSession } from "next-auth/react";
+import ChartContainer from './ChartContainer';
+import { DashBlank } from './DashBlank';
 
-// Component which displays Dashboard or DashBlank based on login and/or Cluster IP availability
-const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
+interface DashboardProps {
+  clusterIP: string;
+  snapshotObj: object;
+  setSnapshotObj: any;
+  dashNum: number;
+}
 
+
+const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapshotObj, dashNum }) => {
   // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
   // added labelName state 
@@ -18,7 +22,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
   // eventHandlers 
 
   // add a property in snapshotObj 
-  const handleSnapshotSubmit = (event: any) => {
+  const handleSnapshotSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     const unixTimeStamp = Date.now();
     const date = new Date(unixTimeStamp);
@@ -32,7 +36,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
   }
 
   // set currentTimeStamp state to option we choose on the dropbown
-  const handleDashboardChange = (event: any) => {
+  const handleDashboardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault()
     const changedTimeStamp = event.target.value
     // console.log('snapshotObj', snapshotObj, 'event value', event.target.value)
@@ -41,6 +45,7 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
     // console.log('currentTimeStamp', currentTimeStamp)
   }
 
+
   // set labelName to our input 
   const handleLabelChange = (event: any) => {
     event.preventDefault()
@@ -48,59 +53,40 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
   }
 
   return (
-    <div className=" bg-accent/20 rounded-xl p-2 mt-5">
-{/* sets background color, gap size, rounded corners, and padding */}
-      <div className="flex flex-auto justify-between">
-
-    {/* changed dropdown from unordered list to select/options to add onChange event */}
-        {/* applies flex layout and justifies content*/}
-
-        {/* dropdown menu   */}
-        
-        <div className="dropdown dropdown-right ml-2">
-          <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
-          <select
-            tabIndex={0}
-            className="dropdown-content shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
-            onChange={handleDashboardChange}
-          >
-            {/* creates all the options in our dropdown from our snapshotObj */}
-            { (dashNum === 2) ? Object.keys(snapshotObj).map(el => {
-              if (el !== 'Current')
-              return (
+    <>
+      <div className="bg-accent/20 rounded-xl p-2 mb-6">
+        <div className="flex justify-between ">
+          <div className="dropdown dropdown-right ml-2">
+            <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
+            <select
+              tabIndex={0}
+              className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
+              onChange={handleDashboardChange}
+            >
+              {dashNum === 2 ? Object.keys(snapshotObj).map(el => {
+                if (el !== 'Current')
+                  return (
+                    <option value={snapshotObj[el]}>{el}</option>
+                  );
+              }) : Object.keys(snapshotObj).map(el => (
                 <option value={snapshotObj[el]}>{el}</option>
-              )
-            }) : Object.keys(snapshotObj).map(el => {
-              return (
-                <option value={snapshotObj[el]}>{el}</option>
-              )
-            }) } 
-          </select>
+              ))}
+            </select>
+          </div>
+
+          {dashNum === 1 ? (
+            <div className="mr-2">
+              <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
+            </div>
+          ) : ''}
         </div>
+
 
         <div>
           <p>Cluster IP: {clusterIP} {}</p>
         </div>
-
-
-      {/* old ul dropdown  */}
-        {/* <div className="dropdown dropdown-right ml-2 " >
-          <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
-          <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70">
-            {snapshotObj.map(el => {
-              return (
-                <li><a>{Object.keys(el)[0]}</a></li>
-              )
-            })}
-          </ul>
-        </div> */}
-    
-    {/* added onclick to update snapshotObj with current time to snapshot button  
-    TODO: add snapshots to database */}
-
-
         {/* snapshot button */}
-          <div className="mr-2">
+        <div className="mr-2">
         <form action="">
           <input type="text"
           placeholder='Snapshot Label' 
@@ -112,21 +98,18 @@ const Dashboard = ({clusterIP, snapshotObj, setSnapshotObj, dashNum}:any) => {
           </div>
           
 
-      </div>
-    {/* refactored iframe links for clusterIP, timestamp inputs */}
-     { (dashNum === 2 && Object.keys(snapshotObj).length > 1) ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} /> : (dashNum === 1 ? <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp}/> : <DashBlank/>
-)}
 
-    </div>
+        {(dashNum === 2 && Object.keys(snapshotObj).length > 1) ? (
+          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} />
+        ) : (dashNum === 1 ? (
+          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} />
+        ) : (
+          <DashBlank/>
+        ))}
+
+      </div>
+    </>
   );
 };
 
-
-
-
 export default Dashboard;
-
-{/* <iframe src="http://34.70.193.242/d-solo/a87fb0d919ec0ea5f6543124e16c42a5/kubernetes-compute-resources-namespace-workloads?orgId=1&refresh=10s&var-datasource=default&var-cluster=&var-namespace=default&var-type=deployment&from=now-1h&to=now&panelId=1" width="450" height="200" frameborder="0"></iframe> */ }
-
-
-
