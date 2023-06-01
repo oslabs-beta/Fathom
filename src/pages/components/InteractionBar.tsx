@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useState, useRef, useEffect } from "react"
+import { api } from "~/utils/api";
 
 // TODO: define a type for InteractionBar props and import it instead of any
 export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
@@ -7,6 +8,16 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const [inputIP, setInputIP] = useState('')
   const [isIPValid, setIsIPValid] = useState(true);
   const inputRef = useRef(null);
+  
+  // TRPC
+  const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
+  
+  const createNewClusterIP = api.clusterIP.createNew.useMutation({
+    onSuccess:()=>{
+      // refetchSnaps() // add void?
+      console.log('successfully saved clusterIP')
+    }
+  })
 
 // Update the input field value when inputIP changes
   useEffect(() => {
@@ -34,9 +45,12 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     if (validateIP(inputIP)) {
     setClusterIP(inputIP);
     setInputIP('');
-    console.log('new ip cluster', clusterIP)
-    console.log(typeof clusterIP)}
-
+    // console.log('new ip cluster', clusterIP)
+    // console.log(typeof clusterIP)
+    createNewClusterIP.mutate({clusterIP: inputIP})
+    refetchClusterIPArray();
+    console.log(clusterIPArray);
+    }
     else {
       setInputIP('');
       setIsIPValid(false);
@@ -48,8 +62,8 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     const newIP = (event.target as HTMLInputElement).value
     if (newIP) setInputIP(newIP)
     console.log('the new ip', inputIP)
-
   }
+
   return (
     <div className="navbar flex flex-1 justify-center items-start top-12 left-0 right-0 mb-3">
       {/* navbar styling, flex layout, centers content */}
