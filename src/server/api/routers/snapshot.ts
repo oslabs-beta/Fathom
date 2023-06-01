@@ -24,11 +24,15 @@ export const snapshotRouter = createTRPCRouter({
   // change to private procedure when working
   // new procudure: takes an object with timestamp info
   createNew: protectedProcedure
-    .input(z.object({unixtime: z.string()}))
+    .input(z.object({unixtime: z.number(),
+    label:z.string(),
+    clusterId:z.string()
+    }))
     .mutation(({ctx, input}) => {
     return ctx.prisma.snapshot.create({
         data: {
             unixtime: input.unixtime,
+            label: input.label,
             userId: ctx.session?.user.id,
             
         }

@@ -75,13 +75,17 @@ model ClusterIP {
     ipAddress String
     user      User     @relation(fields: [userId], references: [id])
     userId    String
+    snapshots Snapshot[]
 }
 
 model Snapshot {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    unixtime  String
+    unixtime  BigInt
     user      User     @relation(fields: [userId], references: [id])
     userId    String
+    label     String?
+    cluster   ClusterIP? @relation(fields: [clusterId], references: [id]) 
+    clusterId String? 
 }

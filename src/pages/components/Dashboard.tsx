@@ -2,23 +2,34 @@ import React, { useState } from 'react';
 import { signIn, signOut, useSession } from "next-auth/react";
 import ChartContainer from './ChartContainer';
 import { DashBlank } from './DashBlank';
+import { api } from "~/utils/api";
+
 
 interface DashboardProps {
   clusterIP: string;
   snapshotObj: object;
   setSnapshotObj: any;
   dashNum: number;
+  currClusterId: string;
 }
 
 
-const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapshotObj, dashNum }) => {
+const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapshotObj, dashNum, currClusterId }) => {
   // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
   // added labelName state 
   const [labelName, setLabelName] = useState('')
   const { data: sessionData } = useSession();
+  const { data: snapshots , refetch: refecthSnaps } = api.snapshot.getAll.useQuery()
 
-  
+  // hook to create snapshot in db
+  const createNewSnapshot = api.snapshot.createNew.useMutation({
+    onSuccess:()=>{
+      refecthSnaps()
+    }
+  })
+
+
   // eventHandlers 
 
   // add a property in snapshotObj 
@@ -29,9 +40,14 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
     const formattedDate = date.toLocaleString()
     const obj = { ...snapshotObj }
   // if labelName exists add a property into snapshotObj    labelName: Unix Time  otherwise add a property as    M/D/Y Time: Unix Time
-  console.log(labelName)
+    console.log(labelName)
     labelName ? obj[labelName] = unixTimeStamp : obj[formattedDate] = unixTimeStamp  
     setSnapshotObj(obj)
+    createNewSnapshot.mutate({
+      unixtime: unixTimeStamp,
+      label: labelName,
+      clusterId: currClusterId
+    })
     console.log('new snapshotObj', snapshotObj)
   }
 
