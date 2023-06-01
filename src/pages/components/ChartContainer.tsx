@@ -1,6 +1,9 @@
 import { Chart } from 'src/pages/components/Chart'
-
-export default function ChartContainer({ currentClusterIP, currentTimeStamp }: any) {
+type ChartContainer = {
+  currentClusterIP: string;
+  currentTimeStamp: string;
+}
+export default function ChartContainer({ currentClusterIP, currentTimeStamp }: ChartContainer) {
   return (
     <div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-10">

@@ -4,8 +4,10 @@ import React from 'react';
 // Chart.tsx: components that hold individual charts; built with intention to size charts specifically 
 // May now be refactored into one single chart component, as they are properly auto-sized by Grafana
 
-
-export function Chart({ source }) {
+type ChartProps = {
+    source: string;
+  };
+export function Chart({ source } : ChartProps) {
     return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4">
         {/* Flex container with max width, columns, gap between elements, rounded corners, and padding */}
         <iframe

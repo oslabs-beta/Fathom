@@ -5,8 +5,8 @@ import { DashBlank } from './DashBlank';
 
 interface DashboardProps {
   clusterIP: string;
-  clusterIPArray: Array<any>;
-  snapshotObj: object;
+  clusterIPArray: Array<object>;
+  snapshotObj: any;
   setSnapshotObj: any;
   dashNum: number;
 }
@@ -15,6 +15,7 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
   const { data: sessionData } = useSession();
   // const [tabIP, setTabIP] = useState('')
+  console.log(typeof setSnapshotObj)
   const [currentClusterIP, setCurrentClusterIP] = useState();
 
   const handleTabClick = (ip: string) => {
@@ -45,10 +46,10 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
 
   return (
     <>
-      {dashNum === 1 ? <div className="tabs flex justify-center">
+      {/* {dashNum === 1 ? <div className="tabs flex justify-center"> */}
 
         {/* // iterate over array if object.userId matches sessionData.user.id  */}
-        {clusterIPArray.filter(el => {
+        {/* {clusterIPArray.filter(el => {
           let userInfo = el.userId
           return (userInfo == sessionData.user.id);
         }).map((obj) => {
@@ -60,8 +61,8 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
           >
             {ip}
           </a>
-        })}
-      </div> : ''}
+        })} */}
+      {/* </div> : ''} */}
 
       {console.log(currentClusterIP, "DFHSLKDFJHDSF")}
 
