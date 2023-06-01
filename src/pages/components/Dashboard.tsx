@@ -45,23 +45,26 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
 
   return (
     <>
-      {dashNum === 1 ? <div className="tabs flex justify-center">
+      {dashNum === 1 ? 
+        <div className="tabs flex justify-center">
 
-        {/* // iterate over array if object.userId matches sessionData.user.id  */}
-        {clusterIPArray.filter(el => {
-          let userInfo = el.userId
-          return (userInfo == sessionData.user.id);
-        }).map((obj) => {
-          let ip = obj.ipAddress;
-          <a
-            key={ip}
-            className={`tab tab-lg tab-lifted ${ip === currentClusterIP ? 'tab-active' : ''}`}
-            onClick={() => handleTabClick(ip)}
-          >
-            {ip}
-          </a>
-        })}
-      </div> : ''}
+          {/* // iterate over array if object.userId matches sessionData.user.id  */}
+          {
+            clusterIPArray?.filter(el => {
+              let userInfo = el.userId
+              return (userInfo == sessionData.user.id);
+            }).map((obj) => {
+              let ip = obj.ipAddress;
+              <a
+                key={ip}
+                className={`tab tab-lg tab-lifted ${ip === currentClusterIP ? 'tab-active' : ''}`}
+                onClick={() => handleTabClick(ip)}
+              >
+                {ip}
+              </a>
+            ``})
+          }
+        </div> : ''}
 
       {console.log(currentClusterIP, "DFHSLKDFJHDSF")}
 
