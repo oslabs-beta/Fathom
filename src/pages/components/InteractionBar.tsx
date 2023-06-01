@@ -12,6 +12,7 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   // TRPC
   const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
   
+  // route - adds new clusterIP
   const createNewClusterIP = api.clusterIP.createNew.useMutation({
     onSuccess:()=>{
       // refetchSnaps() // add void?
@@ -26,6 +27,8 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     }
   }, [inputIP]);
 
+// const existingIP = clusterIPArray?.find(ip => ip === inputIP);
+  // TODO: Validate that IP does not already exist in database
   const validateIP = (IP) => {
     if (IP && /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(IP)) {
       setIsIPValid(true);
@@ -45,11 +48,10 @@ export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
     if (validateIP(inputIP)) {
     setClusterIP(inputIP);
     setInputIP('');
-    // console.log('new ip cluster', clusterIP)
-    // console.log(typeof clusterIP)
     createNewClusterIP.mutate({clusterIP: inputIP})
     refetchClusterIPArray();
-    console.log(clusterIPArray);
+    console.log("CLUSTERIPARRAYYYYYY", clusterIPArray);
+    console.log("SESSIONDATAAAAA", sessionData);
     }
     else {
       setInputIP('');
