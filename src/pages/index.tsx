@@ -74,8 +74,8 @@ const Home: NextPage = () => {
         {
           // currClusterId placeholder so that relation can be made between cluster, snapshot, user
           (sessionData?.user.image && clusterIP) 
-            ? ( <div> <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1} currClusterId = 'clidci06f0001jltxqeor5fj6'/> 
-                      <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2} currClusterId = 'clidci06f0001jltxqeor5fj6'/>      
+            ? ( <div> <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1} currClusterId = {'clidd9uwq0007jlierc4v773v'}/> 
+                      <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2} currClusterId = {'clidd9uwq0007jlierc4v773v'}/>      
                 </div>) 
             :      ""
         }

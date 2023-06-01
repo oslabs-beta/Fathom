@@ -34,7 +34,7 @@ export const snapshotRouter = createTRPCRouter({
             unixtime: input.unixtime,
             label: input.label,
             userId: ctx.session?.user.id,
-            
+            clusterId: input.clusterId,
         }
     })
   })
