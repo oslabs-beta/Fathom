@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { exampleRouter } from "~/server/api/routers/example";
-
+import { snapshotRouter } from "~/server/api/routers/snapshot"
+import { clusterIPRouter } from "./routers/clusterIP";
 /**
  * This is the primary router for your server.
  *
@@ -8,6 +9,8 @@ import { exampleRouter } from "~/server/api/routers/example";
  */
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
+  snapshot: snapshotRouter,
+  clusterIP: clusterIPRouter,
 });
 
 // export type definition of API
