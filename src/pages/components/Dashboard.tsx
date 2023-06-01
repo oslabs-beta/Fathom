@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 
 interface DashboardProps {
   clusterIP: string;
+  clusterIPArray: Array<any>;
   snapshotObj: object;
   setSnapshotObj: any;
   dashNum: number;
@@ -14,14 +15,24 @@ interface DashboardProps {
 }
 
 
-const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapshotObj, dashNum, currClusterId }) => {
+
+
+
+
+const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapshotObj, setSnapshotObj, dashNum, currClusterId }) => {
   // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
   // added labelName state 
   const [labelName, setLabelName] = useState('')
   const { data: sessionData } = useSession();
+  // const [tabIP, setTabIP] = useState('')
   const { data: snapshots , refetch: refecthSnaps } = api.snapshot.getAll.useQuery()
+  const [currentClusterIP, setCurrentClusterIP] = useState();
 
+  const handleTabClick = (ip: string) => {
+    setCurrentClusterIP(ip);
+  };
+  
   // hook to create snapshot in db
   const createNewSnapshot = api.snapshot.createNew.useMutation({
     onSuccess:()=>{
@@ -68,15 +79,43 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
     setLabelName(event.target.value)
   }
 
+  
+
+
+
+
   return (
     <>
+      {dashNum === 1 ? 
+        <div className="tabs flex justify-center">
+
+          {/* // iterate over array if object.userId matches sessionData.user.id  */}
+          {
+            clusterIPArray?.filter(el => {
+              const userInfo = el.userId
+              return (userInfo == sessionData.user.id);
+            }).map((obj) => {
+              const ip = obj.ipAddress;
+              <a
+                key={ip}
+                className={`tab tab-lg tab-lifted ${ip === currentClusterIP ? 'tab-active' : ''}`}
+                onClick={() => handleTabClick(ip)}
+              >
+                {ip}
+              </a>
+            ``})
+          }
+        </div> : ''}
+
+      {console.log(currentClusterIP, "DFHSLKDFJHDSF")}
+
       <div className="bg-accent/20 rounded-xl p-2 mb-6">
         <div className="flex justify-between ">
           <div className="dropdown dropdown-right ml-2">
-            <label tabIndex={0} className="btn m-1 bg-info/10">Select Dashboard</label>
+            <label tabIndex={0} className="btn bg-info/10 m-1 ">Select Dashboard</label>
             <select
               tabIndex={0}
-              className="dropdown-content menu shadow bg-base-100 rounded-box w-52 text-primary text-sm bg-opacity-70"
+              className="dropdown-content w-52 h-8 ml-1 mt-3 "
               onChange={handleDashboardChange}
             >
               {dashNum === 2 ? Object.keys(snapshotObj).map(el => {
@@ -114,12 +153,14 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, snapshotObj, setSnapsh
           
 
 
+
+
         {(dashNum === 2 && Object.keys(snapshotObj).length > 1) ? (
-          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} />
+          <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
         ) : (dashNum === 1 ? (
-          <ChartContainer clusterIP={clusterIP} currentTimeStamp={currentTimeStamp} />
+          <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
         ) : (
-          <DashBlank/>
+          <DashBlank />
         ))}
 
       </div>

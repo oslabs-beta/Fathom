@@ -72,7 +72,7 @@ model ClusterIP {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    ipAddress String
+    ipAddress String   @unique
     user      User     @relation(fields: [userId], references: [id])
     userId    String
     snapshots Snapshot[]

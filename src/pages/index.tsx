@@ -12,6 +12,7 @@ import {DashBlankSignedOut} from 'src/pages/components/DashBlank'
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
+  const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
 
   const [clusterIP, setClusterIP] = useState("")
 
@@ -67,15 +68,17 @@ const Home: NextPage = () => {
 
         
         <LoginHeader />
-   
+
        {/* passed in state/setStates as props to components that update/rely on them */}
         {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP}/> : <DashBlankSignedOut/>}  
         
         {
+
           // currClusterId placeholder so that relation can be made between cluster, snapshot, user
-          (sessionData?.user.image && clusterIP) 
-            ? ( <div> <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1} currClusterId = {'clidd9uwq0007jlierc4v773v'}/> 
-                      <Dashboard clusterIP={clusterIP} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2} currClusterId = {'clidd9uwq0007jlierc4v773v'}/>      
+          (sessionData?.user.image) 
+            ? ( <div> <Dashboard clusterIP={clusterIP} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1} currClusterId = {'clidd9uwq0007jlierc4v773v'}/> 
+                      <Dashboard clusterIP={clusterIP} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2} currClusterId = {'clidd9uwq0007jlierc4v773v'}/>      
+
                 </div>) 
             :      ""
         }

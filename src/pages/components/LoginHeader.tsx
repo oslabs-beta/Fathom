@@ -17,9 +17,8 @@ export const LoginHeader: React.FC = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className=" h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
           </label>
           <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>Homepage</a></li>
-            <li><a>Portfolio</a></li>
-            <li><a>About</a></li>
+            <li><a>My Clusters</a></li>
+            <li><a>My Snapshots</a></li>
           </ul>
         </div>
 
@@ -41,7 +40,7 @@ export const LoginHeader: React.FC = () => {
           className="btn mr-4 ml-4 rounded-xl bg-white/5  no-underline transition "
           onClick={sessionData ? () => void signOut() : () => void signIn()}
         >
-          {sessionData ? "Sign out" : "Sign in with GitHub"}
+          {sessionData ? "Sign out" : "Sign in"}
         </button>
       </div></div>
   )
