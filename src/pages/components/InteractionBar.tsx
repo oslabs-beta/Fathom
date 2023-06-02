@@ -3,32 +3,29 @@ import { useState, useRef, useEffect } from "react"
 import { api } from "~/utils/api";
 
 // TODO: define a type for InteractionBar props and import it instead of any
-export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: any) => {
+export const InteractionBar: any = ({ clusterIP, setClusterIP }: any) => {
   const { data: sessionData } = useSession()
   const [inputIP, setInputIP] = useState('')
   const [isIPValid, setIsIPValid] = useState(true);
   const inputRef = useRef(null);
   
   // TRPC
-  // const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
+  const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
   
-  // route - adds new clusterIP
   const createNewClusterIP = api.clusterIP.createNew.useMutation({
     onSuccess:()=>{
-      refetchClusterIPArray()
+      // refetchSnaps() // add void?
       console.log('successfully saved clusterIP')
     }
   })
 
 // Update the input field value when inputIP changes
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.value = inputIP; 
-  //   }
-  // }, [inputIP]);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = inputIP; 
+    }
+  }, [inputIP]);
 
-// const existingIP = clusterIPArray?.find(ip => ip === inputIP);
-  // TODO: Validate that IP does not already exist in database
   const validateIP = (IP) => {
     if (IP && /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(IP)) {
       setIsIPValid(true);
@@ -46,12 +43,13 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   const handleClusterIPSubmit = (event: any) => {
     event.preventDefault()
     if (validateIP(inputIP)) {
-    // setClusterIP(inputIP);
+    setClusterIP(inputIP);
     setInputIP('');
+    // console.log('new ip cluster', clusterIP)
+    // console.log(typeof clusterIP)
     createNewClusterIP.mutate({clusterIP: inputIP})
-    // refetchClusterIPArray();
-    console.log("CLUSTERIPARRAYYYYYY", clusterIPArray);
-    console.log("SESSIONDATAAAAA", sessionData);
+    refetchClusterIPArray();
+    console.log(clusterIPArray);
     }
     else {
       setInputIP('');
