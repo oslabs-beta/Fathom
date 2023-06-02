@@ -87,7 +87,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
         />
 
         {/* Button for submitting a new Cluster IP */}
-        <button className="btn mr-4 ml-4 text-info/60 rounded-xl bg-white/5 no-underline transition" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition" onClick={handleClusterIPSubmit}>Submit New IP</button>
         {/* onsubmit, render dashboard */}
 
       </form>

@@ -82,7 +82,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           {clusterIPArray?.map((obj) => (
             <div key={obj.ipAddress} className="tab-wrapper">
               <a
-                className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'bg-accent/40 text-current' : ''
+                className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'bg-accent/30 text-current' : ''
                   }`}
                 onClick={() => handleTabClick(obj.ipAddress)}
               >
@@ -99,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         ''
       )}
 
-      <div className="bg-accent/40 rounded-xl p-2 mb-8">
+      <div className="bg-accent/30 rounded-xl p-2 mb-8">
         <div className="flex justify-between">
           <div className="dropdown dropdown-right ml-3">
             <label tabIndex={0} className="btn bg-info/10 mt-2 ">

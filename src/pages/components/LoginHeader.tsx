@@ -9,7 +9,7 @@ export const LoginHeader: React.FC = () => {
   return (
 
     // Topmost navbar, always displays. Includes Fathom logo and sign in button(s)
-    <div className="navbar bg-gradient-to-br from-gray-800 to-base-100/60 fixed top-0 left-0 right-0  p-1 ">
+    <div className="navbar bg-gradient-to-br from-gray-800 to-base-100/60 fixed top-0 left-0 right-0  p-1 text-info/70">
       {/* gradient background, fixed position, span entire top of page, padding */}
       <div className="navbar-start ">
         <div className="dropdown">
@@ -24,7 +24,7 @@ export const LoginHeader: React.FC = () => {
 
       {/* logo */}
       
-      <div className="ml-3 mt-3 flex-1">
+      <div className="ml-3 mt-3 flex-1 ">
         <Image
           src={icon}
           alt="fathom-icon"
@@ -37,7 +37,7 @@ export const LoginHeader: React.FC = () => {
 
         {/* sign in/out button */}
         <button
-          className="btn mr-4 ml-4 rounded-xl bg-white/5  no-underline transition "
+          className="btn mr-4 ml-4 rounded-xl bg-white/5  no-underline transition text-info/80"
           onClick={sessionData ? () => void signOut() : () => void signIn()}
         >
           {sessionData ? "Sign out" : "Sign in"}
