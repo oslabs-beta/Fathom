@@ -53,7 +53,7 @@ const Home: NextPage = () => {
       {/* extra button to test tRPC hooks */}
       {/* can be modified here for components */}
    
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-secondary/60 to-black pt-12">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800 to-black pt-12">
       {/* this button tests the snapshot procedures: remove when snapshot CRUD is implemented */}
       {/* <button onClick={(e)=>{checkSnapshot()}}>blah</button> */}
         <LoginHeader />
