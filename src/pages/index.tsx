@@ -63,7 +63,7 @@ const Home: NextPage = () => {
         {sessionData?.user.image ? <InteractionBar refetchClusterIPArray={refetchClusterIPArray}/> : <DashBlankSignedOut/>}  
         
         {
-          (sessionData?.user.image && clusterIPArray) 
+           (sessionData?.user.image && clusterIPArray!==null && clusterIPArray?.length>0)
             ? ( <div> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1}/> 
                       <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2}/>      
                 </div>) 
