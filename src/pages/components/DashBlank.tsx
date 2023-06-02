@@ -21,7 +21,7 @@ export function DashBlankSignedOut() {
   
     return (
       <div
-        className={"mt-40 text-center text-info/30 fade-in"}>
+        className={"mt-40 text-center fade-in"}>
         <Image
 src={icon}
 alt="fathom-icon"
@@ -34,7 +34,7 @@ width={600}
               opacity: 0;
             }
             100% {
-              opacity: .2;
+              opacity: .3;
             }
           }
           .fade-in {

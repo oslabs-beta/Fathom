@@ -9,7 +9,7 @@ export const LoginHeader: React.FC = () => {
   return (
 
     // Topmost navbar, always displays. Includes Fathom logo and sign in button(s)
-    <div className="navbar bg-gradient-to-br from-gray-800 to-base-100/60 fixed top-0 left-0 right-0  p-2 ">
+    <div className="navbar bg-gradient-to-br from-gray-800 to-base-100/60 fixed top-0 left-0 right-0  p-1 opacity-80">
       {/* gradient background, fixed position, span entire top of page, padding */}
       <div className="navbar-start ">
         <div className="dropdown">
