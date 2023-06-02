@@ -8,6 +8,7 @@ import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
 import { useState } from "react";
 import {DashBlankSignedOut} from 'src/pages/components/DashBlank'
+
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
@@ -73,3 +74,4 @@ const Home: NextPage = () => {
     </>
   );
 }
+export default Home;

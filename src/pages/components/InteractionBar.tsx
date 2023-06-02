@@ -21,11 +21,11 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   })
 
 // Update the input field value when inputIP changes
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.value = inputIP; 
-  //   }
-  // }, [inputIP]);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = inputIP; 
+    }
+  }, [inputIP]);
 
 // const existingIP = clusterIPArray?.find(ip => ip === inputIP);
   // TODO: Validate that IP does not already exist in database

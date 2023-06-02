@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from 'next-auth/react';
 import ChartContainer from './ChartContainer';
 import { DashBlank } from './DashBlank';
+import { api } from '~/utils/api';
 
 interface DashboardProps {
   initialClusterIP: string;
@@ -12,11 +13,45 @@ interface DashboardProps {
   dashNum: number;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray, refetchClusterIPArray, snapshotObj, setSnapshotObj, dashNum }) => {
+const Dashboard: React.FC<DashboardProps> = ({
+  initialClusterIP,
+  clusterIPArray,
+  refetchClusterIPArray,
+  snapshotObj,
+  setSnapshotObj,
+  dashNum,
+}) => {
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
   const { data: sessionData } = useSession();
   const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
   const [ipArray, setipArray] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [ipToDelete, setIpToDelete] = useState('');
+
+  const deleteIP = api.clusterIP.deleteIP.useMutation({
+    onSuccess: () => {
+      refetchClusterIPArray();
+      console.log('successfully deleted clusterIP');
+    },
+  });
+
+  const handleDeleteIP = (ipAddress: string) => {
+    setIpToDelete(ipAddress);
+    setShowConfirmation(true);
+  };
+
+  const confirmDeleteIP = () => {
+    const clusterIPToDelete = clusterIPArray.find((obj) => obj.ipAddress === ipToDelete);
+    if (clusterIPToDelete) {
+      deleteIP.mutate({ id: clusterIPToDelete.id });
+    }
+    setShowConfirmation(false);
+  };
+
+  const cancelDeleteIP = () => {
+    setShowConfirmation(false);
+    setIpToDelete('');
+  };
 
   const handleTabClick = (ip: string) => {
     setCurrentClusterIP(ip);
@@ -33,93 +68,96 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
     console.log('new snapshotObj', snapshotObj);
   };
 
-  const handleDashboardChange = (event: React.ChangeEvent<HTMLSipectipement>) => {
+  const handleDashboardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault();
     const changedTimeStamp = event.target.value;
     setCurrentTimeStamp(changedTimeStamp);
   };
 
-
-  // const onlyUserClusters = clusterIPArray ? clusterIPArray.filter(ip => {
-  //   const userInfo = ip.userId
-  //   return (userInfo == sessionData.user.id);
-  // }) : [];
-  
-  // const onlyIPs = onlyUserClusters.map((obj) => {
-  //   let ip = obj.ipAddress;
-  //   return ip;
-  // });
-  
-  // useEffect(()=> {
-  //   console.log(clusterIPArray)
-  //   setCurrentClusterIP(onlyIPs[0]);
-  //   console.log(onlyIPs[0])
-  //   console.log(currentClusterIP)
-  // },[])
-
-  // useEffect(() => {
-  //   setipArray(onlyIPs);
-  // }, [clusterIPArray]);
-
   return (
     <>
-    {/* {currentClusterIP} */}
-    
-      {dashNum === 1 ?
-        (<div className="tabs flex justify-center">
-          {clusterIPArray?.map((obj) => {
-            
-            return (
+      {/* {currentClusterIP} */}
+      {dashNum === 1 ? (
+        <div className="tabs flex justify-center">
+          {clusterIPArray?.map((obj) => (
+            <div key={obj.ipAddress} className="tab-wrapper">
               <a
-              key={obj.ipAddress}
-              className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'tab-active' : ''}`}
-              onClick={() => handleTabClick(obj.ipAddress)}
-            >
+                className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'tab-active' : ''
+                  }`}
+                onClick={() => handleTabClick(obj.ipAddress)}
+              >
                 {obj.ipAddress}
-              </a>
-            );
-          })
-          }
-        </div>) : ''}
 
+                <button className="btn btn-square  btn-xs ml-4 ">
+                  <svg xmlns="http://www.w3.org/2000/svg" onClick={() => handleDeleteIP(obj.ipAddress)} className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </a>
+            </div>
+          ))}
+        </div>
+      ) : (
+        ''
+      )}
 
       <div className="bg-accent/20 rounded-xl p-2 mb-6">
-        <div className="flex justify-between ">
+        <div className="flex justify-between">
           <div className="dropdown dropdown-right ml-2">
-            <label tabIndex={0} className="btn bg-info/10 m-1 ">{dashNum === 1? "Select Dashboard": "Select Snapshot"}</label>
+            <label tabIndex={0} className="btn bg-info/10 m-1 ">
+              {dashNum === 1 ? 'Select Dashboard' : 'Select Snapshot'}
+            </label>
             <select
               tabIndex={0}
               className="dropdown-content w-52 h-8 ml-1 mt-3 "
               onChange={handleDashboardChange}
             >
-              {dashNum === 2 ? Object.keys(snapshotObj).map(ip => {
-                if (ip !== 'Current')
-                  return (
-                    <option value={snapshotObj[ip]}>{ip}</option>
-                  );
-              }) : Object.keys(snapshotObj).map(ip => (
-                <option value={snapshotObj[ip]}>{ip}</option>
-              ))}
+              {dashNum === 2 ? (
+                Object.keys(snapshotObj).map((ip) => {
+                  if (ip !== 'Current') return <option value={snapshotObj[ip]}>{ip}</option>;
+                })
+              ) : (
+                Object.keys(snapshotObj).map((ip) => (
+                  <option value={snapshotObj[ip]}>{ip}</option>
+                ))
+              )}
             </select>
           </div>
 
           {dashNum === 1 ? (
             <div className="mr-2">
-              <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
+              <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>
+                Snapshot
+              </button>
             </div>
-          ) : ''}
+          ) : (
+            ''
+          )}
         </div>
 
-
-
-        {(dashNum === 2 && Object.keys(snapshotObj).length > 1) ? (
+        {dashNum === 2 && Object.keys(snapshotObj).length > 1 ? (
           <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
-        ) : (dashNum === 1 ? (
+        ) : dashNum === 1 ? (
           <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
         ) : (
           <DashBlank />
-        ))}
+        )}
       </div>
+
+
+      {showConfirmation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-accent bg-opacity-30">
+          <div className=" bg-black bg-opacity-90 p-4 rounded-lg w-50 h-50 ">
+            <p className="mb-4 ">Are you sure you want to delete this IP?</p>
+            <div className="flex justify-end">
+              <button className="btn btn-ghost bg-accent mr-2 " onClick={confirmDeleteIP}>
+                Confirm
+              </button>
+              <button className="btn btn-ghost" onClick={cancelDeleteIP}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
