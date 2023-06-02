@@ -82,14 +82,13 @@ const Dashboard: React.FC<DashboardProps> = ({
           {clusterIPArray?.map((obj) => (
             <div key={obj.ipAddress} className="tab-wrapper">
               <a
-                className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'bg-accent/40 text-current' : 'tab-active opacity-40'
+                className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'bg-accent/40 text-current' : ''
                   }`}
                 onClick={() => handleTabClick(obj.ipAddress)}
               >
                 {obj.ipAddress}
 
-                <button className={`btn btn-square btn-xs ml-4 ${obj.ipAddress === currentClusterIP ? 'btn-current' : 'btn-ghost '
-                  }`}>
+                <button className={`btn btn-square btn-xs ml-4 btn-ghost`}>
                   <svg xmlns="http://www.w3.org/2000/svg" onClick={() => handleDeleteIP(obj.ipAddress)} className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </a>
