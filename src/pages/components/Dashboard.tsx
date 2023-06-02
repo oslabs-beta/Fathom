@@ -15,25 +15,54 @@ interface DashboardProps {
   currClusterId: string;
 }
 
+interface snapshotProps {
+  clusterIP:string
+  createdAt:any //datetime?
+  id: string
+  label: string
+  unixtime:any
+  updatedAt:any 
+  userId:string
+
+}
+
+function filterByIp (notFiltered:Array<snapshotProps>, ip:string) : Array<snapshotProps>{
+  return notFiltered.filter(el=>{
+    return el.clusterIP === ip ? true : false
+  })
+}
+
+
 const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray, refetchClusterIPArray, snapshotObj, setSnapshotObj, dashNum }) => {
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
   const { data: sessionData } = useSession();
   
   const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
-  const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } =api.snapshot.getByUserCluster.useQuery({clusterIP: ''})
+  
+  // hooks for snapshot management
+  const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } = api.snapshot.getAll.useQuery()
+  const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } = api.snapshot.getByUserCluster.useQuery({clusterIP: initialClusterIP})
+  // state containing filtered snaps by clusterIP
+  const [filteredByIPSnaps, setfilteredByIPSnaps] = useState(filterByIp(unfilteredSnapshots))
+  
   const [labelName, setLabelName] = useState('')
   
   const [ipArray, setipArray] = useState([]);
 
   const handleTabClick = (ip: string) => {
     setCurrentClusterIP(ip);
+    
+    // refetch and rerender the available snaps
+
   };
   
   // hook to create snapshot in db
   const createNewSnapshot = api.snapshot.createNew.useMutation({
     onSuccess:()=>{
-      refetchSnaps();
-      refetchfilteredSnapshots({clusterIP: currentClusterIP});
+      refetchunfilteredSnapshots();
+      console.log(`the snapshots, unfiltered`, unfilteredSnapshots)
+      console.log(`the snapshots, filtered`, filterByIp(unfilteredSnapshots, currentClusterIP))
+      // console.log(`the snapshots, filtered by ${currentClusterIP} and user`, unfilteredSnapshots)
     }
   })
 
@@ -75,30 +104,6 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
     event.preventDefault()
     setLabelName(event.target.value)
   }
-
-
-  // const onlyUserClusters = clusterIPArray ? clusterIPArray.filter(ip => {
-  //   const userInfo = ip.userId
-  //   return (userInfo == sessionData.user.id);
-  // }) : [];
-  
-  // const onlyIPs = onlyUserClusters.map((obj) => {
-  //   let ip = obj.ipAddress;
-  //   return ip;
-  // });
-  
-
-  
-  // useEffect(()=> {
-  //   console.log(clusterIPArray)
-  //   setCurrentClusterIP(onlyIPs[0]);
-  //   console.log(onlyIPs[0])
-  //   console.log(currentClusterIP)
-  // },[])
-
-  // useEffect(() => {
-  //   setipArray(onlyIPs);
-  // }, [clusterIPArray]);
 
   return (
     <>

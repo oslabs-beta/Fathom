@@ -18,17 +18,23 @@ export const snapshotRouter = createTRPCRouter({
 
     // queries and returns all snapshots
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.snapshot.findMany()
+    return ctx.prisma.snapshot.findMany({
+        where: {
+            userId: {
+              equals: ctx.session?.user.id,
+            }
+          }
+        })
   }),
 
+  // type
   getByUserCluster: protectedProcedure
     .input(z.object({ clusterIP: z.string()}))
-    
     .query(({ ctx, input }) => {
       return ctx.prisma.snapshot.findMany({
         where: {
           clusterIP: {
-            equals: '34.70.193.242'
+            equals: input.clusterIP
           },
           AND: {
             userId: {
