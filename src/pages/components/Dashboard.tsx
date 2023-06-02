@@ -61,7 +61,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
   //handle tab click
   async function handleTabClick (ip: string){
     setCurrentClusterIP(ip);
-    console.log('current cluster ip', currentClusterIP)
+    console.log('current cluster ip is:',  currentClusterIP)
     
     // refetch and rerender the available snaps
     // get the unfiltered check with console.log(unfilteredSnapshots)
@@ -77,6 +77,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
 
     // update the snapshot object with the new object
     await setSnapshotObj({...updatedSnapshotObj  })
+    console.log(snapshotObj)
   };
 
   // add a property in snapshotObj 

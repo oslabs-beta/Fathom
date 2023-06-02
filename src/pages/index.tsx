@@ -12,7 +12,6 @@ import {DashBlankSignedOut} from 'src/pages/components/DashBlank'
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
-  console.log('the cluster IP',clusterIPArray)
 
   
   // current clusterIP !?
