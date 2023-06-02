@@ -38,43 +38,12 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
   const { data: sessionData } = useSession();
   
   const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
-  
+  // handleTabClick(currentClusterIP)
   // hooks for snapshot management
   const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } = api.snapshot.getAll.useQuery()
   // const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } = api.snapshot.getByUserCluster.useQuery({clusterIP: initialClusterIP})
   // state containing filtered snaps by clusterIP
   const [filteredByIPSnaps, setfilteredByIPSnaps] = useState(filterByIp(unfilteredSnapshots, currentClusterIP))
-  
-  const [labelName, setLabelName] = useState('')
-  
-  const [ipArray, setipArray] = useState([]);
-
-  const handleTabClick = async(ip: string) => {
-    setCurrentClusterIP(ip);
-    console.log('current cluster ip', currentClusterIP)
-    
-    // refetch and rerender the available snaps
-    // get the unfiltered check with console.log(unfilteredSnapshots)
-    await refetchunfilteredSnapshots();
-    
-    //set the filtered filteredByIPSnaps
-     setfilteredByIPSnaps(filterByIp(unfilteredSnapshots, currentClusterIP))
-    // modify snapshotObj
-    // set snapshotObj to object with labels of labels, values
-    
-    const updatedSnapshotObj:any = {}
-    
-    filteredByIPSnaps.forEach(el=>{
-      updatedSnapshotObj[el.label] = el.unixtime
-      
-    })
-
-    console.log(updatedSnapshotObj)
-    // update the snapshot object with the new object
-    await setSnapshotObj({...updatedSnapshotObj  })
-    console.log(snapshotObj)
-
-  };
   
   // hook to create snapshot in db
   const createNewSnapshot = api.snapshot.createNew.useMutation({
@@ -86,8 +55,29 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
     }
   })
 
-
+  const [labelName, setLabelName] = useState('')  
+  
   // eventHandlers 
+  //handle tab click
+  async function handleTabClick (ip: string){
+    setCurrentClusterIP(ip);
+    console.log('current cluster ip', currentClusterIP)
+    
+    // refetch and rerender the available snaps
+    // get the unfiltered check with console.log(unfilteredSnapshots)
+    await refetchunfilteredSnapshots();
+    
+    //set the filtered filteredByIPSnaps
+     setfilteredByIPSnaps(filterByIp(unfilteredSnapshots, currentClusterIP))
+
+    // modify snapshotObj    
+    // set snapshotObj to object with labels of labels, values
+    const updatedSnapshotObj:any = {}
+    filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
+
+    // update the snapshot object with the new object
+    await setSnapshotObj({...updatedSnapshotObj  })
+  };
 
   // add a property in snapshotObj 
   const handleSnapshotSubmit = (event: React.FormEvent) => {
@@ -124,6 +114,8 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
     event.preventDefault()
     setLabelName(event.target.value)
   }
+
+  
 
   return (
     <>
