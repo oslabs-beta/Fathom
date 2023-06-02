@@ -50,8 +50,6 @@ const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray,
   //   return ip;
   // });
   
-
-  
   // useEffect(()=> {
   //   console.log(clusterIPArray)
   //   setCurrentClusterIP(onlyIPs[0]);
