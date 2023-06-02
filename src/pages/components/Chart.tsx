@@ -7,6 +7,9 @@ import React from 'react';
 type ChartProps = {
     source: string;
   };
+
+//   valid source? if no, render something else?
+
 export function Chart({ source } : ChartProps) {
     return <div className="flex max-w-s flex-col gap-4 rounded-xl p-4">
         {/* Flex container with max width, columns, gap between elements, rounded corners, and padding */}

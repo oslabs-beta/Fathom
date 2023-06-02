@@ -7,8 +7,14 @@ import {
 } from "~/server/api/trpc";
 
 export const clusterIPRouter = createTRPCRouter({   
-    getAll: publicProcedure.query(({ctx}) => {
-        return ctx.prisma.clusterIP.findMany();
+    getAll: protectedProcedure.query(({ctx}) => {
+        return ctx.prisma.clusterIP.findMany({
+            where: {
+                userId: {
+                  equals: ctx.session?.user.id,
+                },
+              },
+        });
     }),
     createNew: protectedProcedure.input(z.object({clusterIP: z.string()})) 
     .mutation(({ctx,input})=> {

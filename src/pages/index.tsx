@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import React from 'react';
 import Dashboard from './components/Dashboard';
-// import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { LoginHeader } from "./components/LoginHeader";
@@ -13,9 +12,10 @@ import {DashBlankSignedOut} from 'src/pages/components/DashBlank'
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
+  console.log('the cluster IP',clusterIPArray)
 
-  const [clusterIP, setClusterIP] = useState("")
-
+  
+  // current clusterIP !?
 
   // tRPC EXAMPLE START
   // hook example on how to destructure an array of the snapshots,
@@ -70,12 +70,12 @@ const Home: NextPage = () => {
         <LoginHeader />
 
        {/* passed in state/setStates as props to components that update/rely on them */}
-        {sessionData?.user.image ? <InteractionBar clusterIP={clusterIP} setClusterIP={setClusterIP}/> : <DashBlankSignedOut/>}  
+        {sessionData?.user.image ? <InteractionBar refetchClusterIPArray={refetchClusterIPArray}/> : <DashBlankSignedOut/>}  
         
         {
-          (sessionData?.user.image) 
-            ? ( <div> <Dashboard clusterIP={clusterIP} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1}/> 
-                      <Dashboard clusterIP={clusterIP} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2}/>      
+          (sessionData?.user.image && clusterIPArray) 
+            ? ( <div> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1}/> 
+                      <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2}/>      
                 </div>) 
             :      ""
         }
