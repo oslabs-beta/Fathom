@@ -78,17 +78,17 @@ const Dashboard: React.FC<DashboardProps> = ({
     <>
       {/* {currentClusterIP} */}
       {dashNum === 1 ? (
-        <div className="tabs flex justify-center mt-4 ">
+        <div className="tabs flex justify-center mt-5 ">
           {clusterIPArray?.map((obj) => (
             <div key={obj.ipAddress} className="tab-wrapper">
               <a
-                className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'bg-accent/30 text-current' : ''
+                className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'bg-accent/30 text-current' : 'text-info/50'
                   }`}
                 onClick={() => handleTabClick(obj.ipAddress)}
               >
                 {obj.ipAddress}
 
-                <button className={`btn btn-square btn-xs ml-4 btn-ghost`}>
+                <button className={`btn btn-square btn-xs ml-3 btn-ghost ${obj.ipAddress === currentClusterIP ? 'text-current' : 'opacity-0'}`}>
                   <svg xmlns="http://www.w3.org/2000/svg" onClick={() => handleDeleteIP(obj.ipAddress)} className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </a>
@@ -99,9 +99,9 @@ const Dashboard: React.FC<DashboardProps> = ({
         ''
       )}
 
-      <div className="bg-accent/30 rounded-xl p-2 mb-8">
-        <div className="flex justify-between">
-          <div className="dropdown dropdown-right ml-3">
+      <div className="bg-accent/30 rounded-xl p-2 mb-8 ">
+        <div className="flex justify-between ">
+          <div className="dropdown dropdown-right ml-3 ">
             <label tabIndex={0} className="btn bg-info/10 mt-2 ">
               {dashNum === 1 ? 'Select Dashboard' : 'Select Snapshot'}
             </label>
@@ -123,7 +123,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
           {dashNum === 1 ? (
             <div className="mr-3 mt-2">
-              <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>
+              <button className="btn bg-info/10 " onClick={handleSnapshotSubmit}>
                 Snapshot
               </button>
             </div>
@@ -143,11 +143,11 @@ const Dashboard: React.FC<DashboardProps> = ({
 
 {/* confirm delete ip modal */}
       {showConfirmation && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-secondary bg-opacity-30">
-          <div className=" bg-black bg-opacity-90 p-4 rounded-lg w-50 h-50 ">
-            <p className="mb-4 ">Are you sure you want to delete this IP?</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className=" p-8 bg-gray-900 text-xl p-4 rounded-lg w-100 h-40 ">
+            <p className="mb-6 ">Are you sure you want to delete this IP?</p>
             <div className="flex justify-end">
-              <button className="btn btn-ghost bg-secondary mr-2 " onClick={confirmDeleteIP}>
+              <button className="btn btn-ghost bg-accent/20 mr-2 " onClick={confirmDeleteIP}>
                 Confirm
               </button>
               <button className="btn btn-ghost " onClick={cancelDeleteIP}>

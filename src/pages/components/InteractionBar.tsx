@@ -67,7 +67,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   }
 
   return (
-    <div className="navbar flex flex-1 justify-center items-start top-12 left-0 right-0 mt-2 mb-1">
+    <div className="navbar flex flex-1 justify-center items-start top-12 left-0 right-0 mt-2 mb-1 ">
       {/* navbar styling, flex layout, centers content */}
 
       {/* Form container */}
@@ -87,7 +87,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
         />
 
         {/* Button for submitting a new Cluster IP */}
-        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition text-info/80" onClick={handleClusterIPSubmit}>Submit New IP</button>
         {/* onsubmit, render dashboard */}
 
       </form>
