@@ -12,7 +12,7 @@ const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
   console.log('the cluster IP',clusterIPArray)
- 
+
   // current clusterIP !?
   // tRPC EXAMPLE START
   // hook example on how to destructure an array of the snapshots,
@@ -56,13 +56,17 @@ const Home: NextPage = () => {
       {/* this button tests the snapshot procedures: remove when snapshot CRUD is implemented */}
       {/* <button onClick={(e)=>{checkSnapshot()}}>blah</button> */}
         <LoginHeader />
+
+
        {/* passed in state/setStates as props to components that update/rely on them */}
-        {sessionData?.user.image ? <InteractionBar refetchClusterIPArray={refetchClusterIPArray}/> : <DashBlankSignedOut/>}
+        {sessionData?.user.image ? <InteractionBar refetchClusterIPArray={refetchClusterIPArray}/> : <DashBlankSignedOut/>}  
+        
         {
-          (sessionData?.user.image && clusterIPArray)
-            ? ( <div> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1}/>
-                      <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2}/>
-                </div>)
+          (sessionData?.user.image && clusterIPArray) 
+            ? ( <div> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {1}/> 
+                      <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchClusterIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum = {2}/>      
+                </div>) 
+
             :      ""
         }
       </main>
