@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signIn, signOut, useSession } from "next-auth/react";
 import ChartContainer from './ChartContainer';
 import { DashBlank } from './DashBlank';
@@ -6,29 +6,24 @@ import { api } from "~/utils/api";
 
 
 interface DashboardProps {
-  clusterIP: string;
+  initialClusterIP: string;
   clusterIPArray: Array<any>;
-  snapshotObj: object;
+  refetchClusterIPArray: any;
+  snapshotObj: any;
   setSnapshotObj: any;
   dashNum: number;
   currClusterId: string;
 }
 
-
-
-
-
-
-const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapshotObj, setSnapshotObj, dashNum, currClusterId }) => {
-  // added timestamp state (defaults to 'now') to keep track of in individual dashboard components 
-  const [currentTimeStamp, setCurrentTimeStamp] = useState('now')
-  // added labelName state 
-  const [labelName, setLabelName] = useState('')
+const Dashboard: React.FC<DashboardProps> = ({ initialClusterIP, clusterIPArray, refetchClusterIPArray, snapshotObj, setSnapshotObj, dashNum }) => {
+  const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
   const { data: sessionData } = useSession();
-  // const [tabIP, setTabIP] = useState('')
-  const { data: snapshots , refetch: refetchSnaps } = api.snapshot.getAll.useQuery()
+  
+  const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
   const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } =api.snapshot.getByUserCluster.useQuery({clusterIP: ''})
-  const [currentClusterIP, setCurrentClusterIP] = useState('34.70.193.242'); //temp
+  const [labelName, setLabelName] = useState('')
+  
+  const [ipArray, setipArray] = useState([]);
 
   const handleTabClick = (ip: string) => {
     setCurrentClusterIP(ip);
@@ -81,52 +76,68 @@ const Dashboard: React.FC<DashboardProps> = ({ clusterIP, clusterIPArray, snapsh
     setLabelName(event.target.value)
   }
 
+
+  // const onlyUserClusters = clusterIPArray ? clusterIPArray.filter(ip => {
+  //   const userInfo = ip.userId
+  //   return (userInfo == sessionData.user.id);
+  // }) : [];
+  
+  // const onlyIPs = onlyUserClusters.map((obj) => {
+  //   let ip = obj.ipAddress;
+  //   return ip;
+  // });
   
 
+  
+  // useEffect(()=> {
+  //   console.log(clusterIPArray)
+  //   setCurrentClusterIP(onlyIPs[0]);
+  //   console.log(onlyIPs[0])
+  //   console.log(currentClusterIP)
+  // },[])
 
-
+  // useEffect(() => {
+  //   setipArray(onlyIPs);
+  // }, [clusterIPArray]);
 
   return (
     <>
-      {dashNum === 1 ? 
-        <div className="tabs flex justify-center">
-
-          {/* // iterate over array if object.userId matches sessionData.user.id  */}
-          {
-            clusterIPArray?.filter(el => {
-              const userInfo = el.userId
-              return (userInfo == sessionData.user.id);
-            }).map((obj) => {
-              const ip = obj.ipAddress;
+    {/* {currentClusterIP} */}
+    
+      {dashNum === 1 ?
+        (<div className="tabs flex justify-center">
+          {clusterIPArray?.map((obj) => {
+            
+            return (
               <a
-                key={ip}
-                className={`tab tab-lg tab-lifted ${ip === currentClusterIP ? 'tab-active' : ''}`}
-                onClick={() => handleTabClick(ip)}
-              >
-                {ip}
+              key={obj.ipAddress}
+              className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'tab-active' : ''}`}
+              onClick={() => handleTabClick(obj.ipAddress)}
+            >
+                {obj.ipAddress}
               </a>
-            ``})
+            );
+          })
           }
-        </div> : ''}
+        </div>) : ''}
 
-      {/* {console.log(currentClusterIP, "DFHSLKDFJHDSF")} */}
 
       <div className="bg-accent/20 rounded-xl p-2 mb-6">
         <div className="flex justify-between ">
           <div className="dropdown dropdown-right ml-2">
-            <label tabIndex={0} className="btn bg-info/10 m-1 ">Select Dashboard</label>
+            <label tabIndex={0} className="btn bg-info/10 m-1 ">{dashNum === 1? "Select Dashboard": "Select Snapshot"}</label>
             <select
               tabIndex={0}
               className="dropdown-content w-52 h-8 ml-1 mt-3 "
               onChange={handleDashboardChange}
             >
-              {dashNum === 2 ? Object.keys(snapshotObj).map(el => {
-                if (el !== 'Current')
+              {dashNum === 2 ? Object.keys(snapshotObj).map(ip => {
+                if (ip !== 'Current')
                   return (
-                    <option value={snapshotObj[el]}>{el}</option>
+                    <option value={snapshotObj[ip]}>{ip}</option>
                   );
-              }) : Object.keys(snapshotObj).map(el => (
-                <option value={snapshotObj[el]}>{el}</option>
+              }) : Object.keys(snapshotObj).map(ip => (
+                <option value={snapshotObj[ip]}>{ip}</option>
               ))}
             </select>
           </div>
