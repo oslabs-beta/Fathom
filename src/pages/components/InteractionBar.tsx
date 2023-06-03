@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useState, useRef, useEffect } from "react"
 import { api } from "~/utils/api";
+import { useClusterContext } from "./ClusterContext";
 
 // TODO: define a type for InteractionBar props and import it instead of any
 export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: any) => {
@@ -9,6 +10,10 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   const [isIPValid, setIsIPValid] = useState(true);
   const inputRef = useRef(null);
   
+  const {currentClusterIP, setCIP} = useClusterContext();
+  console.log('using context here with cluster ip selection:',currentClusterIP)
+
+
   // TRPC
   // const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
   

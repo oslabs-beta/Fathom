@@ -3,6 +3,8 @@ import Head from "next/head";
 import React from 'react';
 import Dashboard from './components/Dashboard';
 import { signIn, signOut, useSession } from "next-auth/react";
+// context for global Cluster IP, Array state and setters
+import { useClusterContext } from './components/ClusterContext';
 import { api } from "~/utils/api";
 import { LoginHeader } from "./components/LoginHeader";
 import { InteractionBar } from "./components/InteractionBar";
@@ -13,6 +15,11 @@ const Home: NextPage = () => {
   const { data: sessionData } = useSession()
   const { data: clusterIPArray, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery();
   console.log('the cluster IP', clusterIPArray)
+
+  // test out use context with clusterIP
+  const {currentClusterIP, setCIP} = useClusterContext();
+  setTimeout(()=>setCIP('34.70.193.242'), 2000)
+  // console.log('using context here with cluster ip selection:',currentClusterIP)
 
   // tRPC EXAMPLE START
   // hook example on how to destructure an array of the snapshots,
