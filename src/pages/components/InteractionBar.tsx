@@ -48,13 +48,15 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
 
   // need to manage state: one of the props is likely to be a reference to state in the parent 
   // will give a reference to the IP address of the cluster to other components
-  const handleClusterIPSubmit = (event: any) => {
+  const handleClusterIPSubmit = async (event: any) => {
     event.preventDefault()
     if (validateIP(inputIP)) {
     // setClusterIP(inputIP);
     setInputIP('');
-    createNewClusterIP.mutate({clusterIP: inputIP})
-    // refetchClusterIPArray();
+    const {ipAddress:newipAddress} = await createNewClusterIP.mutateAsync({clusterIP: inputIP})
+    // set the state of the app to the newly created
+    setCIP(newipAddress)
+    refetchClusterIPArray();
     console.log("CLUSTERIPARRAY", clusterIPArray);
     console.log("SESSIONDATA", sessionData);
     }
