@@ -83,14 +83,26 @@ const Dashboard: React.FC<DashboardProps> = ({
     },
   });
 
+  const deleteSnapshotsByIP = api.snapshot.deleteSnapshotsByIP.useMutation({
+    onSuccess: () => {
+      console.log('successfully deleted snapshots');
+      setCurrentTimeStamp('Now') // adjust the timestamp to now
+    },
+  });
+
+
+
   const handleDeleteIP = (ipAddress: string) => {
     setIpToDelete(ipAddress);
     setShowConfirmation(true);
   };
 
-  const confirmDeleteIP = () => {
+  const confirmDeleteIP = async() => {
+
     const clusterIPToDelete = clusterIPArray.find((obj) => obj.ipAddress === ipToDelete);
+    console.log('to be deleted',clusterIPToDelete)
     if (clusterIPToDelete) {
+      deleteSnapshotsByIP.mutate({ id: clusterIPToDelete.id });
       deleteIP.mutate({ id: clusterIPToDelete.id });
     }
     setShowConfirmation(false);
