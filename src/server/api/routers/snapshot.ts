@@ -64,18 +64,21 @@ export const snapshotRouter = createTRPCRouter({
   }),
 
   deleteSnapshotsByIP: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ ipToDelete: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const deleteSnaps = await ctx.prisma.snapshot.deleteMany({
         where: {
           clusterIP: {
-            equals: input.id
+            equals: input.ipToDelete
           },
         },
       });
 
       return {
-        success: 'deleted'
+        success: 'deleted',
+        data:{
+          deleteSnaps
+        }
       };
     }),
 

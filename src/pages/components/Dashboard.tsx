@@ -97,12 +97,12 @@ const Dashboard: React.FC<DashboardProps> = ({
     setShowConfirmation(true);
   };
 
+  // combines clusterIP and associated snapshots deletion
   const confirmDeleteIP = async() => {
-
     const clusterIPToDelete = clusterIPArray.find((obj) => obj.ipAddress === ipToDelete);
-    console.log('to be deleted',clusterIPToDelete)
     if (clusterIPToDelete) {
-      deleteSnapshotsByIP.mutate({ id: clusterIPToDelete.id });
+      // wait for the snapshots to be deleted before deleting IPs
+      await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete.ipAddress });
       deleteIP.mutate({ id: clusterIPToDelete.id });
     }
     setShowConfirmation(false);
@@ -112,7 +112,6 @@ const Dashboard: React.FC<DashboardProps> = ({
     setShowConfirmation(false);
     setIpToDelete('');
   };  
-
 
   // add a property in snapshotObj 
   const handleSnapshotSubmit = (event: React.FormEvent) => {
