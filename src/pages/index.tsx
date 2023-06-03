@@ -14,7 +14,6 @@ const Home: NextPage = () => {
   const { data: clusterIPArray, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery();
   console.log('the cluster IP', clusterIPArray)
 
-  // current clusterIP !?
   // tRPC EXAMPLE START
   // hook example on how to destructure an array of the snapshots,
   // and a refetching function
