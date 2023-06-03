@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import ChartContainer from './ChartContainer';
 import { DashBlank } from './DashBlank';
-import { api } from '~/utils/api';
+import { api } from "~/utils/api";
 
+
+//type definition
 interface DashboardProps {
   initialClusterIP: string;
   clusterIPArray: Array<any>;
@@ -11,8 +13,27 @@ interface DashboardProps {
   snapshotObj: any;
   setSnapshotObj: any;
   dashNum: number;
+  currClusterId: string;
+}
+//type definition
+interface snapshotProps {
+  clusterIP:string
+  createdAt:any //datetime?
+  id: string
+  label: string
+  unixtime:any
+  updatedAt:any 
+  userId:string
+
+}
+// helper to get snaps by IP
+function filterByIp (notFiltered:Array<snapshotProps>, ip:string) : Array<snapshotProps>{
+  return notFiltered.filter(el=>{
+    return el.clusterIP === ip ? true : false
+  })
 }
 
+// dashboard component
 const Dashboard: React.FC<DashboardProps> = ({
   initialClusterIP,
   clusterIPArray,
@@ -23,8 +44,14 @@ const Dashboard: React.FC<DashboardProps> = ({
 }) => {
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
   const { data: sessionData } = useSession();
+  
   const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
-  const [ipArray, setipArray] = useState([]);
+  // handleTabClick(currentClusterIP)
+  // hooks for snapshot management
+  const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } = api.snapshot.getAll.useQuery()
+  // const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } = api.snapshot.getByUserCluster.useQuery({clusterIP: initialClusterIP})
+  // state containing filtered snaps by clusterIP
+  const [filteredByIPSnaps, setfilteredByIPSnaps] = useState(filterByIp(unfilteredSnapshots, currentClusterIP))
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [ipToDelete, setIpToDelete] = useState('');
 
@@ -51,28 +78,84 @@ const Dashboard: React.FC<DashboardProps> = ({
   const cancelDeleteIP = () => {
     setShowConfirmation(false);
     setIpToDelete('');
-  };
+  };  
 
-  const handleTabClick = (ip: string) => {
-    setCurrentClusterIP(ip);
-  };
 
+  // add a property in snapshotObj 
   const handleSnapshotSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     const unixTimeStamp = Date.now();
     const date = new Date(unixTimeStamp);
-    const formattedDate = date.toLocaleString();
-    const obj = { ...snapshotObj };
-    obj[formattedDate] = unixTimeStamp;
-    setSnapshotObj(obj);
-    console.log('new snapshotObj', snapshotObj);
+    const formattedDate = date.toLocaleString()
+    const obj = { ...snapshotObj }
+  // if labelName exists add a property into snapshotObj    labelName: Unix Time  otherwise add a property as    M/D/Y Time: Unix Time
+    console.log(labelName)
+    labelName ? obj[labelName] = unixTimeStamp : obj[formattedDate] = unixTimeStamp  
+    setSnapshotObj(obj)
+    createNewSnapshot.mutate({
+      unixtime: unixTimeStamp,
+      label: labelName,
+      clusterIP: currentClusterIP
+    })
+    console.log('new snapshotObj', snapshotObj)
+  }
+
+
+  
+  // hook to create snapshot in db
+  const createNewSnapshot = api.snapshot.createNew.useMutation({
+    onSuccess:()=>{
+      refetchunfilteredSnapshots();
+      console.log(`the snapshots, unfiltered`, unfilteredSnapshots)
+      console.log(`the snapshots, filtered`, filterByIp(unfilteredSnapshots, currentClusterIP))
+      // console.log(`the snapshots, filtered by ${currentClusterIP} and user`, unfilteredSnapshots)
+    }
+  })
+
+  const [labelName, setLabelName] = useState('')  
+  
+  // eventHandlers 
+  //handle tab click
+  async function handleTabClick (ip: string){
+    setCurrentClusterIP(ip);
+    console.log('current cluster ip is:',  currentClusterIP)
+    
+    // refetch and rerender the available snaps
+    // get the unfiltered check with console.log(unfilteredSnapshots)
+    await refetchunfilteredSnapshots();
+    
+    //set the filtered filteredByIPSnaps
+     setfilteredByIPSnaps(filterByIp(unfilteredSnapshots, currentClusterIP))
+
+    // modify snapshotObj    
+    // set snapshotObj to object with labels of labels, values
+    const updatedSnapshotObj:any = {}
+    filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
+
+    // update the snapshot object with the new object
+    await setSnapshotObj({...updatedSnapshotObj  })
+    console.log(snapshotObj)
   };
 
+
+  // set currentTimeStamp state to option we choose on the dropbown
   const handleDashboardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    const changedTimeStamp = event.target.value;
-    setCurrentTimeStamp(changedTimeStamp);
-  };
+    event.preventDefault()
+    const changedTimeStamp = event.target.value
+    // console.log('snapshotObj', snapshotObj, 'event value', event.target.value)
+    // console.log('changedTimeStamp', changedTimeStamp)
+    setCurrentTimeStamp(changedTimeStamp)
+    // console.log('currentTimeStamp', currentTimeStamp)
+  }
+
+
+  // set labelName to our input 
+  const handleLabelChange = (event: any) => {
+    event.preventDefault()
+    setLabelName(event.target.value)
+  }
+
+  
 
   return (
     <>
@@ -121,15 +204,23 @@ const Dashboard: React.FC<DashboardProps> = ({
               )}
             </select>
           </div>
+
+
+
+        {/* snapshot button */}
           {dashNum === 1 ? (
             <div className="mr-3 mt-2">
-              <button className="btn bg-info/10 " onClick={handleSnapshotSubmit}>
-                Snapshot
-              </button>
-            </div>
-          ) : (
-            ''
-          )}
+            <form action="">
+              <input type="text"
+              placeholder='Snapshot Label' 
+              onChange={handleLabelChange}
+              className="input input-bordered max-h-xs max-w-xs bg-info/10 rounded-xl mr-3"/>
+                {/* right margin of 2 units */}
+                <button className="btn bg-info/10" onClick={handleSnapshotSubmit}>Snapshot</button>
+            </form>
+              </div>
+
+          ) : ''}
         </div>
 
         {dashNum === 2 && Object.keys(snapshotObj).length > 1 ? (
