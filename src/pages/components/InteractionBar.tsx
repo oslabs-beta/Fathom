@@ -15,7 +15,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   // route - adds new clusterIP
   const createNewClusterIP = api.clusterIP.createNew.useMutation({
     onSuccess:()=>{
-      refetchClusterIPArray()
+      refetchClusterIPArray();
       console.log('successfully saved clusterIP')
     }
   })
@@ -67,11 +67,11 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   }
 
   return (
-    <div className="navbar flex flex-1 justify-center items-start top-12 left-0 right-0 mb-3">
+    <div className="navbar flex flex-1 justify-center items-start top-12 left-0 right-0 mt-2 mb-1 ">
       {/* navbar styling, flex layout, centers content */}
 
       {/* Form container */}
-      <form className="text-l mt-8 ">
+      <form className="text-l mt-6 ">
 
         {/* needs typing for the onSubmit function */}
         {/* research React.changeEvent https://stackoverflow.com/questions/61244635/type-void-is-not-assignable-to-type-event-changeeventhtmlinputelement*/}
@@ -87,7 +87,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
         />
 
         {/* Button for submitting a new Cluster IP */}
-        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition" onClick={handleClusterIPSubmit}>Submit New IP</button>
+        <button className="btn mr-4 ml-4 rounded-xl bg-white/5 no-underline transition text-info/80" onClick={handleClusterIPSubmit}>Submit New IP</button>
         {/* onsubmit, render dashboard */}
 
       </form>
