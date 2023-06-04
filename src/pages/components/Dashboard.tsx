@@ -104,6 +104,9 @@ const Dashboard: React.FC<DashboardProps> = ({
       // wait for the snapshots to be deleted before deleting IPs
       await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete.ipAddress });
       deleteIP.mutate({ id: clusterIPToDelete.id });
+
+      // set state to remove old snapshots
+      setSnapshotObj({})
     }
     setShowConfirmation(false);
   };
