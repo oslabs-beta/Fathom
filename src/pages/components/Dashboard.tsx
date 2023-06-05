@@ -12,50 +12,12 @@ interface DashboardProps {
   initialClusterIP: string;
   clusterIPArray: Array<any>;
   refetchClusterIPArray: any;
-  snapshotObj: any;
-  setSnapshotObj: any;
   dashNum: number;
   currClusterId: string;
-}
-//****** */ mark for deletion after testing****
-//type definition
-interface snapshotProps {
-  clusterIP:string
-  createdAt:any //datetime?
-  id: string
-  label: string
-  unixtime:any
-  updatedAt:any 
-  userId:string
-
-}
-//****** */ mark for deletion after testing****
-// helper to get snaps by IP
-function filterByIp (notFiltered:Array<snapshotProps>, ip:string) : Array<snapshotProps>{
-  if(notFiltered){
-    const results = notFiltered.filter(el=>{
-      return el.clusterIP === ip ? true : false
-    });
-    // console.log('filtered',results)
-  return results
-  } else {
-    // returns an empty array of "snaps"
-    return [{
-      clusterIP:`${ip}`,
-      createdAt:'', //datetime?
-      id: '',
-      label: 'Current',
-      unixtime:'now',
-      updatedAt:'', 
-      userId:''
-    }]
-  }
 }
 
 // dashboard component
 const Dashboard: React.FC<DashboardProps> = ({
-  snapshotObj,
-  setSnapshotObj,
   dashNum,
 }) => {
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
@@ -67,20 +29,19 @@ const Dashboard: React.FC<DashboardProps> = ({
     setCIP: setCurrentClusterIP, 
     clusterIPArray, 
     refetchCIPArray: refetchClusterIPArray,
-    currentCIPSnaps,
+    currentCIPSnaps: filteredByIPSnaps,
     refreshSnapsArray
   } = useClusterContext();
 
   //startup tab selection
   //initialize currentIP IF THE ARRAY IS POPULATED and there's no current clusterip
-  (clusterIPArray[0] && !currentClusterIP)?setCurrentClusterIP(clusterIPArray[0].ipAddress):null
+  if(clusterIPArray)(clusterIPArray[0] && !currentClusterIP)?setCurrentClusterIP(clusterIPArray[0].ipAddress):null
 
-  // handleTabClick(currentClusterIP)
   // hooks for snapshot management
-  const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } =api.snapshot.getAll.useQuery() 
-  // const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } = api.snapshot.getByUserCluster.useQuery({clusterIP: initialClusterIP})
-  // state containing filtered snaps by clusterIP
-  const [filteredByIPSnaps, setfilteredByIPSnaps] = useState(filterByIp(unfilteredSnapshots, currentClusterIP))
+  // const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } =api.snapshot.getAll.useQuery() 
+  const [snapshotObj, setSnapshotObj] = useState({ Current: 'now' })
+
+  // hooks for tab deletion
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [ipToDelete, setIpToDelete] = useState('');
 
@@ -101,8 +62,6 @@ const Dashboard: React.FC<DashboardProps> = ({
     },
   });
 
-
-
   const handleDeleteIP = (ipAddress: string) => {
     setIpToDelete(ipAddress);
     setShowConfirmation(true);
@@ -116,11 +75,8 @@ const Dashboard: React.FC<DashboardProps> = ({
       await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete.ipAddress });
       deleteIP.mutate({ id: clusterIPToDelete.id });
 
-      
-      // console.log('currentCIP snaps:',currentCIPSnaps)
-
-      // set state to remove old snapshots
-      setSnapshotObj({})
+      // set state to remove old snapshots modify after moving state here
+      setSnapshotObj({Current:'now'})
     }
     setShowConfirmation(false);
   };
@@ -131,21 +87,27 @@ const Dashboard: React.FC<DashboardProps> = ({
   };  
 
   // add a property in snapshotObj 
-  const handleSnapshotSubmit = (event: React.FormEvent) => {
+  const handleSnapshotSubmit = async(event: React.FormEvent) => {
     event.preventDefault()
     const unixTimeStamp = Date.now();
     const date = new Date(unixTimeStamp);
     const formattedDate = date.toLocaleString()
     const obj = { ...snapshotObj }
-  // if labelName exists add a property into snapshotObj    labelName: Unix Time  otherwise add a property as    M/D/Y Time: Unix Time
+    // if labelName exists add a property into snapshotObj    labelName: Unix Time  otherwise add a property as    M/D/Y Time: Unix Time
     console.log(labelName)
     labelName ? obj[labelName] = unixTimeStamp : obj[formattedDate] = unixTimeStamp  
     setSnapshotObj(obj)
-    createNewSnapshot.mutate({
+    
+    // trying to see if making async changes the executions
+    const flag = await createNewSnapshot.mutateAsync({
       unixtime: unixTimeStamp,
       label: labelName,
-      clusterIP: currentClusterIP
+      clusterIP: currentClusterIP ?currentClusterIP :''
     })
+    
+    // it does not -- but clicking on tabs DOES refresh the droptown
+    if(flag) handleUserClusterInteraction()
+
     console.log('new snapshotObj', snapshotObj)
   }
 
@@ -154,10 +116,8 @@ const Dashboard: React.FC<DashboardProps> = ({
   // hook to create snapshot in db
   const createNewSnapshot = api.snapshot.createNew.useMutation({
     onSuccess:()=>{
-      refetchunfilteredSnapshots();
-      console.log(`the snapshots, unfiltered`, unfilteredSnapshots)
-      console.log(`the snapshots, filtered`, filterByIp(unfilteredSnapshots, currentClusterIP))
-      // console.log(`the snapshots, filtered by ${currentClusterIP} and user`, unfilteredSnapshots)
+      refreshSnapsArray();
+      console.log(`the snapshots, filtered by ${currentClusterIP} and user`, filteredByIPSnaps)
     }
   })
 
@@ -166,28 +126,30 @@ const Dashboard: React.FC<DashboardProps> = ({
   // eventHandlers 
   //handle tab click
   async function handleTabClick (ip: string){
+    console.log('tab clicked')
+
     setCurrentClusterIP(ip);
     console.log('current cluster ip is:',  currentClusterIP)
-    // lget the snapshots for the currently selected tab
-    refreshSnapsArray()
-
-    /***mark for deletion */
-    // refetch and rerender the available snaps
-    // get the unfiltered check with console.log(unfilteredSnapshots)
-    await refetchunfilteredSnapshots();
-    
-    //set the filtered filteredByIPSnaps
-     setfilteredByIPSnaps(filterByIp(unfilteredSnapshots, currentClusterIP))
-
-    // modify snapshotObj    
-    // set snapshotObj to object with labels of labels, values
-    const updatedSnapshotObj:any = {}
-    filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
-
-    // update the snapshot object with the new object
-    await setSnapshotObj({...updatedSnapshotObj  })
-    console.log(snapshotObj)
+    handleUserClusterInteraction()
   };
+
+  async function handleUserClusterInteraction() {
+    // lget the snapshots for the currently selected tab
+    const blah = await refreshSnapsArray() //<-needs to be async and trigger the remainder ofthe code
+    // AFTER snaps fetched, THEN trigger the update below
+
+    if (blah) {
+      // modify snapshotObj    
+      // set snapshotObj to object with labels of labels, values
+      const updatedSnapshotObj:any = {}
+      filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
+  
+      // update the snapshot object with the new object
+      setSnapshotObj({ ...updatedSnapshotObj, Current:'now'  })
+      console.log(snapshotObj)
+
+    }
+  }
 
 
   // set currentTimeStamp state to option we choose on the dropbown

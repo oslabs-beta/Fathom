@@ -10,8 +10,8 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   const [isIPValid, setIsIPValid] = useState(true);
   const inputRef = useRef(null);
   
-  const {currentClusterIP, setCIP} = useClusterContext();
-  console.log('using context here with cluster ip selection:',currentClusterIP)
+  const {currentClusterIP, setCIP, currentCIPSnaps} = useClusterContext();
+  console.log('using context here with cluster ip selection and snaps:',currentClusterIP, currentCIPSnaps)
 
 
   // TRPC

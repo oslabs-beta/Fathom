@@ -18,11 +18,9 @@ const Home: NextPage = () => {
   // test out use context with clusterIP
   const {currentClusterIP, setCIP, clusterIPArray, refetchCIPArray} = useClusterContext();
   // setCIP(currentClusterIP)
-  console.log('the cluster IP', clusterIPArray)
 
   // refactored snapshotArr (array of objects) to snapshotObj (object) to keep track of our snapshots in our dropdown 
   // TODO load up snapshotObj from db according to user info 
-  const [snapshotObj, setSnapshotObj] = useState({ Current: 'now' })
   return (
     <>
       <Head>
@@ -43,8 +41,8 @@ const Home: NextPage = () => {
 
         {
           (sessionData?.user.image && clusterIPArray !== null && clusterIPArray?.length > 0)
-            ? (<div className="w-5/6"> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum={1} />
-              <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum={2} />
+            ? (<div className="w-5/6"> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray}  dashNum={1} />
+              <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray}  dashNum={2} />
             </div>)
 
             : ""

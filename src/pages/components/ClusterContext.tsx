@@ -4,7 +4,7 @@ import { api } from '~/utils/api';
 // define the type of the AppContext object
 type clusterContextType = {
     // current clusterIP
-    currentClusterIP: string;
+    currentClusterIP: string|undefined;
     // set current cluster IP
     setCIP: (arg:string)=>void;
 
@@ -17,7 +17,7 @@ type clusterContextType = {
     currentCIPSnaps: {}[]; //
 
     // method to update the current IP snapshots
-    refreshSnapsArray: ()=>void;
+    refreshSnapsArray: ()=>Promise<any>;
 }
 
 // to instantiate the context
@@ -27,12 +27,12 @@ const clusterContextDefaults: clusterContextType = {
     clusterIPArray: [{}], //array of objects
     refetchCIPArray: ()=>{}, // get cluster IP array
     currentCIPSnaps: [{}],
-    refreshSnapsArray: ()=>{}
+    refreshSnapsArray: ()=>{return new Promise((res, rej)=>{})}
 }
 
 //type definition
 interface snapshotProps {
-    clusterIP:string
+    clusterIP:string|undefined
     createdAt:any //datetime?
     id: string
     label: string
@@ -101,11 +101,14 @@ export function ClusterContext({ children }: Props) {
     const [filteredByIPSnaps, setfilteredByIPSnaps] = useState(filterByIp(unfilteredSnapshots, currentClusterIP))
 
     const refreshSnapsArray = async()=>{
-        await refetchunfilteredSnapshots()
-        console.log('currentCIP unfiltered', unfilteredSnapshots)
-        setfilteredByIPSnaps(filterByIp(unfilteredSnapshots, currentClusterIP))
-        console.log('currentCIParray',currentClusterIP,filteredByIPSnaps, )
+        const {data} = await refetchunfilteredSnapshots()
+        console.log('currentCIP unfiltered', data)
+        setfilteredByIPSnaps(filterByIp(data, currentClusterIP))
+        if (data) console.log('currentCIParray, filtered',currentClusterIP,filteredByIPSnaps, )
 
+        setcurrentCIPSnaps(filterByIp(data, currentClusterIP))
+
+        return data
     }
 
     // value object to provide to children
