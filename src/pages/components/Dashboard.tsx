@@ -17,6 +17,7 @@ interface DashboardProps {
   dashNum: number;
   currClusterId: string;
 }
+//****** */ mark for deletion after testing****
 //type definition
 interface snapshotProps {
   clusterIP:string
@@ -28,6 +29,7 @@ interface snapshotProps {
   userId:string
 
 }
+//****** */ mark for deletion after testing****
 // helper to get snaps by IP
 function filterByIp (notFiltered:Array<snapshotProps>, ip:string) : Array<snapshotProps>{
   if(notFiltered){
@@ -65,11 +67,17 @@ const Dashboard: React.FC<DashboardProps> = ({
     setCIP: setCurrentClusterIP, 
     clusterIPArray, 
     refetchCIPArray: refetchClusterIPArray,
+    currentCIPSnaps,
+    refreshSnapsArray
   } = useClusterContext();
+
+  //startup tab selection
+  //initialize currentIP IF THE ARRAY IS POPULATED and there's no current clusterip
+  (clusterIPArray[0] && !currentClusterIP)?setCurrentClusterIP(clusterIPArray[0].ipAddress):null
 
   // handleTabClick(currentClusterIP)
   // hooks for snapshot management
-  const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } = api.snapshot.getAll.useQuery()
+  const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } =api.snapshot.getAll.useQuery() 
   // const { data: filteredSnapshots, refetch: refetchfilteredSnapshots } = api.snapshot.getByUserCluster.useQuery({clusterIP: initialClusterIP})
   // state containing filtered snaps by clusterIP
   const [filteredByIPSnaps, setfilteredByIPSnaps] = useState(filterByIp(unfilteredSnapshots, currentClusterIP))
@@ -81,8 +89,8 @@ const Dashboard: React.FC<DashboardProps> = ({
       refetchClusterIPArray();
       console.log('successfully deleted clusterIP');
 
-    // select the next tab
-     setCurrentClusterIP(clusterIPArray[0].ipAddress)
+    // select the next tab --bugs out when deleting the first
+    clusterIPArray ? handleTabClick(clusterIPArray[0].ipAddress):''
     },
   });
 
@@ -107,6 +115,9 @@ const Dashboard: React.FC<DashboardProps> = ({
       // wait for the snapshots to be deleted before deleting IPs
       await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete.ipAddress });
       deleteIP.mutate({ id: clusterIPToDelete.id });
+
+      
+      // console.log('currentCIP snaps:',currentCIPSnaps)
 
       // set state to remove old snapshots
       setSnapshotObj({})
@@ -157,7 +168,10 @@ const Dashboard: React.FC<DashboardProps> = ({
   async function handleTabClick (ip: string){
     setCurrentClusterIP(ip);
     console.log('current cluster ip is:',  currentClusterIP)
-    
+    // lget the snapshots for the currently selected tab
+    refreshSnapsArray()
+
+    /***mark for deletion */
     // refetch and rerender the available snaps
     // get the unfiltered check with console.log(unfilteredSnapshots)
     await refetchunfilteredSnapshots();

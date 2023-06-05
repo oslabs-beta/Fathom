@@ -12,6 +12,12 @@ type clusterContextType = {
     clusterIPArray: {}[]|undefined; //array of objects
     // get cluster IP array
     refetchCIPArray: ()=>void;
+
+    // snapshots for that IP
+    currentCIPSnaps: {}[]; //
+
+    // method to update the current IP snapshots
+    refreshSnapsArray: ()=>void;
 }
 
 // to instantiate the context
@@ -20,7 +26,21 @@ const clusterContextDefaults: clusterContextType = {
     setCIP: ()=>{},
     clusterIPArray: [{}], //array of objects
     refetchCIPArray: ()=>{}, // get cluster IP array
+    currentCIPSnaps: [{}],
+    refreshSnapsArray: ()=>{}
 }
+
+//type definition
+interface snapshotProps {
+    clusterIP:string
+    createdAt:any //datetime?
+    id: string
+    label: string
+    unixtime:any
+    updatedAt:any 
+    userId:string
+  
+  }
 
 export const AppContext = createContext<clusterContextType>(clusterContextDefaults)
 
@@ -32,17 +52,60 @@ type Props = {
     children: ReactNode;
 };
 
+function filterByIp (notFiltered:Array<snapshotProps>, ip:string) : Array<snapshotProps>{
+    if(notFiltered){
+      const results = notFiltered.filter(el=>{
+        return el.clusterIP === ip ? true : false
+      });
+      // console.log('filtered',results)
+    return results
+    } else {
+      // returns an empty array of "snaps"
+      return [{
+        clusterIP:`${ip}`,
+        createdAt:'', //datetime?
+        id: '',
+        label: 'Current',
+        unixtime:'now',
+        updatedAt:'', 
+        userId:''
+      }]
+    }
+  }
+
 export function ClusterContext({ children }: Props) {
     // states and functions to pass
-    const[currentClusterIP, setCurrentClusterIP] = useState('')
-    const setCIP = (ip:string) =>{
-        setCurrentClusterIP(ip)
-    }
-
+    
     // state and update state (refetch from API)
     const { data: clusterIPArray, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery();
     const refetchCIPArray = () =>{
         refetchClusterIPArray()
+    }
+
+    const[currentClusterIP, setCurrentClusterIP] = useState(
+        // call for the clusters and get the first one
+        clusterIPArray ? clusterIPArray[0]?.ipAddress : ''
+
+    )
+    const setCIP = (ip:string) =>{
+        setCurrentClusterIP(ip)
+
+        // fetch the snapshots needed for this IP
+
+        // modify the hook ?for `filterered api call?
+    }
+    
+    // snapshot fetching using the API
+    const [currentCIPSnaps, setcurrentCIPSnaps] = useState([{}])
+    const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } = api.snapshot.getAll.useQuery() 
+    const [filteredByIPSnaps, setfilteredByIPSnaps] = useState(filterByIp(unfilteredSnapshots, currentClusterIP))
+
+    const refreshSnapsArray = async()=>{
+        await refetchunfilteredSnapshots()
+        console.log('currentCIP unfiltered', unfilteredSnapshots)
+        setfilteredByIPSnaps(filterByIp(unfilteredSnapshots, currentClusterIP))
+        console.log('currentCIParray',currentClusterIP,filteredByIPSnaps, )
+
     }
 
     // value object to provide to children
@@ -50,7 +113,9 @@ export function ClusterContext({ children }: Props) {
         currentClusterIP,
         setCIP,
         clusterIPArray,
-        refetchCIPArray
+        refetchCIPArray,
+        currentCIPSnaps,
+        refreshSnapsArray
 
     }
     return (

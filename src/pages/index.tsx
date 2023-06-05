@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   
   // test out use context with clusterIP
   const {currentClusterIP, setCIP, clusterIPArray, refetchCIPArray} = useClusterContext();
-  // const refetchClusterIPArray = refetchCIPArray
+  // setCIP(currentClusterIP)
   console.log('the cluster IP', clusterIPArray)
 
   // refactored snapshotArr (array of objects) to snapshotObj (object) to keep track of our snapshots in our dropdown 
