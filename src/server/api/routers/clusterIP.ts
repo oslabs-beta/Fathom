@@ -15,9 +15,10 @@ export const clusterIPRouter = createTRPCRouter({
       },
     });
   }),
-  createNew: protectedProcedure.input(z.object({ clusterIP: z.string() })).mutation(
-    ({ ctx, input }) => {
-      return ctx.prisma.clusterIP.create({
+  createNew: protectedProcedure
+    .input(z.object({ clusterIP: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.clusterIP.create({
         data: {
           ipAddress: input.clusterIP,
           userId: ctx.session?.user.id,

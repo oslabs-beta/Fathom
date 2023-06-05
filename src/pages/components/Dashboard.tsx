@@ -3,6 +3,8 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import ChartContainer from './ChartContainer';
 import { DashBlank } from './DashBlank';
 import { api } from "~/utils/api";
+import { useClusterContext } from '../components/ClusterContext';
+
 
 
 //type definition
@@ -28,16 +30,28 @@ interface snapshotProps {
 }
 // helper to get snaps by IP
 function filterByIp (notFiltered:Array<snapshotProps>, ip:string) : Array<snapshotProps>{
-  return notFiltered.filter(el=>{
-    return el.clusterIP === ip ? true : false
-  })
+  if(notFiltered){
+    const results = notFiltered.filter(el=>{
+      return el.clusterIP === ip ? true : false
+    });
+    // console.log('filtered',results)
+  return results
+  } else {
+    // returns an empty array of "snaps"
+    return [{
+      clusterIP:`${ip}`,
+      createdAt:'', //datetime?
+      id: '',
+      label: 'Current',
+      unixtime:'now',
+      updatedAt:'', 
+      userId:''
+    }]
+  }
 }
 
 // dashboard component
 const Dashboard: React.FC<DashboardProps> = ({
-  initialClusterIP,
-  clusterIPArray,
-  refetchClusterIPArray,
   snapshotObj,
   setSnapshotObj,
   dashNum,
@@ -45,7 +59,14 @@ const Dashboard: React.FC<DashboardProps> = ({
   const [currentTimeStamp, setCurrentTimeStamp] = useState('now');
   const { data: sessionData } = useSession();
   
-  const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
+  // const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
+  const {
+    currentClusterIP, 
+    setCIP: setCurrentClusterIP, 
+    clusterIPArray, 
+    refetchCIPArray: refetchClusterIPArray,
+  } = useClusterContext();
+
   // handleTabClick(currentClusterIP)
   // hooks for snapshot management
   const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } = api.snapshot.getAll.useQuery()
@@ -62,15 +83,30 @@ const Dashboard: React.FC<DashboardProps> = ({
     },
   });
 
+  const deleteSnapshotsByIP = api.snapshot.deleteSnapshotsByIP.useMutation({
+    onSuccess: () => {
+      console.log('successfully deleted snapshots');
+      setCurrentTimeStamp('Now') // adjust the timestamp to now
+    },
+  });
+
+
+
   const handleDeleteIP = (ipAddress: string) => {
     setIpToDelete(ipAddress);
     setShowConfirmation(true);
   };
 
-  const confirmDeleteIP = () => {
+  // combines clusterIP and associated snapshots deletion
+  const confirmDeleteIP = async() => {
     const clusterIPToDelete = clusterIPArray.find((obj) => obj.ipAddress === ipToDelete);
     if (clusterIPToDelete) {
+      // wait for the snapshots to be deleted before deleting IPs
+      await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete.ipAddress });
       deleteIP.mutate({ id: clusterIPToDelete.id });
+
+      // set state to remove old snapshots
+      setSnapshotObj({})
     }
     setShowConfirmation(false);
   };
@@ -79,7 +115,6 @@ const Dashboard: React.FC<DashboardProps> = ({
     setShowConfirmation(false);
     setIpToDelete('');
   };  
-
 
   // add a property in snapshotObj 
   const handleSnapshotSubmit = (event: React.FormEvent) => {
