@@ -80,6 +80,9 @@ const Dashboard: React.FC<DashboardProps> = ({
     onSuccess: () => {
       refetchClusterIPArray();
       console.log('successfully deleted clusterIP');
+
+    // select the next tab
+     setCurrentClusterIP(clusterIPArray[0].ipAddress)
     },
   });
 
