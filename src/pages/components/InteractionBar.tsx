@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useState, useRef, useEffect } from "react"
 import { api } from "~/utils/api";
+import { useClusterContext } from "./ClusterContext";
 
 // TODO: define a type for InteractionBar props and import it instead of any
 export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: any) => {
@@ -9,6 +10,10 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   const [isIPValid, setIsIPValid] = useState(true);
   const inputRef = useRef(null);
   
+  const {currentClusterIP, setCIP} = useClusterContext();
+  console.log('using context here with cluster ip selection:',currentClusterIP)
+
+
   // TRPC
   // const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
   
@@ -43,15 +48,17 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
 
   // need to manage state: one of the props is likely to be a reference to state in the parent 
   // will give a reference to the IP address of the cluster to other components
-  const handleClusterIPSubmit = (event: any) => {
+  const handleClusterIPSubmit = async (event: any) => {
     event.preventDefault()
     if (validateIP(inputIP)) {
     // setClusterIP(inputIP);
     setInputIP('');
-    createNewClusterIP.mutate({clusterIP: inputIP})
-    // refetchClusterIPArray();
-    console.log("CLUSTERIPARRAYYYYYY", clusterIPArray);
-    console.log("SESSIONDATAAAAA", sessionData);
+    const {ipAddress:newipAddress} = await createNewClusterIP.mutateAsync({clusterIP: inputIP})
+    // set the state of the app to the newly created
+    setCIP(newipAddress)
+    refetchClusterIPArray();
+    console.log("CLUSTERIPARRAY", clusterIPArray);
+    console.log("SESSIONDATA", sessionData);
     }
     else {
       setInputIP('');
