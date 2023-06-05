@@ -12,7 +12,8 @@ export const LoginHeader: React.FC = () => {
     <div className="navbar bg-gradient-to-br from-gray-800 to-base-100/60 fixed top-0 left-0 right-0  p-1 ">
       {/* gradient background, fixed position, span entire top of page, padding */}
       <div className="navbar-start ">
-        <div className="dropdown">
+        {/* unused menu */}
+        {/* <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost btn-circle ">
             <svg xmlns="http://www.w3.org/2000/svg" className=" h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
           </label>
@@ -20,7 +21,7 @@ export const LoginHeader: React.FC = () => {
             <li><a>My Clusters</a></li>
             <li><a>My Snapshots</a></li>
           </ul>
-        </div>
+        </div> */}
 
       {/* logo */}
       
