@@ -30,7 +30,9 @@ const Dashboard: React.FC<DashboardProps> = ({
     clusterIPArray, 
     refetchCIPArray: refetchClusterIPArray,
     currentCIPSnaps: filteredByIPSnaps,
-    refreshSnapsArray
+    refreshSnapsArray,
+    snapshotObj,
+    setSnapshotObj
   } = useClusterContext();
   
   console.log('FIRST CLUSERTIP', currentClusterIP)
@@ -45,10 +47,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   // const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } =api.snapshot.getAll.useQuery() 
   
   console.log('snapshots filtered by IP',filteredByIPSnaps)
-  const updatedSnapshotObj:any = {}
-  filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
-  const [snapshotObj, setSnapshotObj] = useState({ ...updatedSnapshotObj, Current: 'now', })
-
+  
   // hooks for tab deletion
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [ipToDelete, setIpToDelete] = useState('');
@@ -84,7 +83,8 @@ const Dashboard: React.FC<DashboardProps> = ({
       deleteIP.mutate({ id: clusterIPToDelete.id });
 
       // set state to remove old snapshots modify after moving state here
-      setSnapshotObj({Current:'now'})
+      // setSnapshotObj({Current:'now'})
+      setSnapshotObj() // using new version
     }
     setShowConfirmation(false);
   };
@@ -102,14 +102,14 @@ const Dashboard: React.FC<DashboardProps> = ({
     const formattedDate = date.toLocaleString()
     const obj = { ...snapshotObj }
     // if labelName exists add a property into snapshotObj    labelName: Unix Time  otherwise add a property as    M/D/Y Time: Unix Time
-    console.log(labelName)
-    labelName ? obj[labelName] = unixTimeStamp : obj[formattedDate] = unixTimeStamp  
-    setSnapshotObj(obj)
+    // console.log(labelName)
+    // labelName ? obj[labelName] = unixTimeStamp : obj[formattedDate] = unixTimeStamp  
+    // setSnapshotObj(obj)
     
     // trying to see if making async changes the executions
     const flag = await createNewSnapshot.mutateAsync({
       unixtime: unixTimeStamp,
-      label: labelName,
+      label: labelName?labelName:formattedDate,
       clusterIP: currentClusterIP ?currentClusterIP :''
     })
     
@@ -153,7 +153,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
   
       // update the snapshot object with the new object
-      setSnapshotObj({ ...updatedSnapshotObj, Current:'now'  })
+      setSnapshotObj()
       console.log(snapshotObj)
 
     }

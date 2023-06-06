@@ -18,6 +18,9 @@ type clusterContextType = {
 
     // method to update the current IP snapshots
     refreshSnapsArray: ()=>Promise<any>;
+
+    snapshotObj: {};
+    setSnapshotObj: ()=>void
 }
 
 // to instantiate the context
@@ -27,7 +30,9 @@ const clusterContextDefaults: clusterContextType = {
     clusterIPArray: [{}], //array of objects
     refetchCIPArray: ()=>{}, // get cluster IP array
     currentCIPSnaps: [{}],
-    refreshSnapsArray: ()=>{return new Promise((res, rej)=>{})}
+    refreshSnapsArray: ()=>{return new Promise((res, rej)=>{})},
+    snapshotObj:{},
+    setSnapshotObj: ()=>{}
 }
 
 //type definition
@@ -91,6 +96,7 @@ export function ClusterContext({ children }: Props) {
         setCurrentClusterIP(ip)
 
         // fetch the snapshots needed for this IP
+        refetchCIPArray()
 
         // modify the hook ?for `filterered api call?
     }
@@ -111,6 +117,18 @@ export function ClusterContext({ children }: Props) {
         return data
     }
 
+    const updatedSnapshotObj:any = {}
+    filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
+    const [snapshotObj, _setSnapshotObj] = useState({ ...updatedSnapshotObj, Current: 'now', })
+
+    const setSnapshotObj = () =>{
+        const updatedSnapshotObj:any = {}
+        filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
+        _setSnapshotObj({ ...updatedSnapshotObj, Current: 'now', })
+
+
+    }
+
     // value object to provide to children
     const value= {
         currentClusterIP,
@@ -118,7 +136,9 @@ export function ClusterContext({ children }: Props) {
         clusterIPArray,
         refetchCIPArray,
         currentCIPSnaps,
-        refreshSnapsArray
+        refreshSnapsArray,
+        snapshotObj,
+        setSnapshotObj
 
     }
     return (
