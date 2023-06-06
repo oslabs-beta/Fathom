@@ -43,8 +43,15 @@ const Home: NextPage = () => {
 
         {
           (sessionData?.user.image && clusterIPArray !== null && clusterIPArray?.length > 0)
-            ? (<div className="w-5/6"> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum={1} />
-              <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray} snapshotObj={snapshotObj} setSnapshotObj={setSnapshotObj} dashNum={2} />
+          // removed initialclusterIP from list of props
+            ? (
+            <div className="w-5/6"> 
+            <Dashboard  
+              snapshotObj={snapshotObj} 
+              setSnapshotObj={setSnapshotObj} dashNum={1} />
+            <Dashboard 
+               snapshotObj={snapshotObj} 
+              setSnapshotObj={setSnapshotObj} dashNum={2} />
             </div>)
 
             : ""
