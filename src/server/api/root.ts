@@ -1,5 +1,4 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { exampleRouter } from "~/server/api/routers/example";
 import { snapshotRouter } from "~/server/api/routers/snapshot"
 import { clusterIPRouter } from "./routers/clusterIP";
 /**
@@ -8,7 +7,6 @@ import { clusterIPRouter } from "./routers/clusterIP";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  example: exampleRouter,
   snapshot: snapshotRouter,
   clusterIP: clusterIPRouter,
 });
