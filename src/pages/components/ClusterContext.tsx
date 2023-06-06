@@ -40,7 +40,7 @@ type Props = {
     children: ReactNode;
 };
 
-export function ClusterContext({ children }: Props) {
+export default function ClusterContext({ children }: Props) {
     // states and functions to pass
     const[currentClusterIP, setCurrentClusterIP] = useState('')
     const setCIP = (ip:string) =>{
