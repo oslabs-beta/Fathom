@@ -220,18 +220,18 @@ const Dashboard: React.FC<DashboardProps> = ({
             >
               {dashNum === 2 ? (
                 Object.keys(snapshotObj).map((ip) => {
-                  if (ip !== 'Current') return <option value={snapshotObj[ip]}>{ip}</option>;
+                  if (ip !== 'Current') return <option value={snapshotObj[ip]}>{ip}{snapshotObj[ip]}</option>;
                 })
               ) : (
-                Object.keys(snapshotObj).map((ip) => (
-                  <option value={snapshotObj[ip]}>{ip}</option>
-                ))
+                Object.keys(snapshotObj).map((ip) => {
+
+                  return <option value={snapshotObj[ip]}>{ip}{snapshotObj[ip]}</option>
+                }
+                )
               )}
             </select>
           </div>
 
-
-        {Object.keys(snapshotObj).length }
 
         {/* snapshot button */}
           {dashNum === 1 ? (

@@ -41,7 +41,8 @@ const Home: NextPage = () => {
 
         {
           (sessionData?.user.image && clusterIPArray !== null && clusterIPArray?.length > 0)
-            ? (<div className="w-5/6"> <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray}  dashNum={1} />
+            ? (<div className="w-5/6">
+              <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray}  dashNum={1} />
               <Dashboard initialClusterIP={clusterIPArray[0]['ipAddress']} refetchClusterIPArray={refetchCIPArray} clusterIPArray={clusterIPArray}  dashNum={2} />
             </div>)
 
