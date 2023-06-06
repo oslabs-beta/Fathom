@@ -7,7 +7,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
   const { data: sessionData } = useSession()
   const [inputIP, setInputIP] = useState('')
   const [isIPValid, setIsIPValid] = useState(true);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   
   // TRPC
   // const {data: clusterIPArray, refetch:refetchClusterIPArray} = api.clusterIP.getAll.useQuery();
@@ -29,7 +29,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
 
 // const existingIP = clusterIPArray?.find(ip => ip === inputIP);
   // TODO: Validate that IP does not already exist in database
-  const validateIP = (IP) => {
+  const validateIP = (IP:string) => {
     if (IP && /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(IP)) {
       setIsIPValid(true);
       console.log("IP VALID")
