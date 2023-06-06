@@ -101,6 +101,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   const confirmDeleteIP = async() => {
     if (clusterIPArray) {
       // any types to avoid empty object property access
+      
       const clusterIPToDelete:any = clusterIPArray.find((obj:any) => obj.ipAddress === ipToDelete);
       // wait for the snapshots to be deleted before deleting IPs
       await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete?.ipAddress });
@@ -207,7 +208,8 @@ const Dashboard: React.FC<DashboardProps> = ({
       {/* {currentClusterIP} */}
       {dashNum === 1 ? (
         <div className="tabs flex justify-center mt-5 ">
-          {clusterIPArray?.map((obj) => (
+          {/* //typescript issue with possibly empty objects */}
+          {clusterIPArray?.map((obj:any) => (
             <div key={obj.ipAddress} className="tab-wrapper">
               <a
                 className={`tab tab-lg tab-lifted ${obj.ipAddress === currentClusterIP ? 'bg-accent/30 text-current' : 'text-info/50'
