@@ -1,10 +1,15 @@
 import { Chart } from 'src/pages/components/Chart'
+import { useClusterContext } from './ClusterContext';
 type ChartContainer = {
   currentClusterIP: string;
   currentTimeStamp: string;
 }
 
-export default function ChartContainer({ currentClusterIP, currentTimeStamp }: ChartContainer) {
+export default function ChartContainer({ currentTimeStamp }: ChartContainer) {
+  
+  const {currentClusterIP} = useClusterContext()
+  
+  console.log('Initializing chart with:', currentClusterIP, currentTimeStamp)
   return (
     <div>
 

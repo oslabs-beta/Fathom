@@ -32,6 +32,10 @@ const Dashboard: React.FC<DashboardProps> = ({
     currentCIPSnaps: filteredByIPSnaps,
     refreshSnapsArray
   } = useClusterContext();
+  
+  console.log('FIRST CLUSERTIP', currentClusterIP)
+
+
 
   //startup tab selection
   //initialize currentIP IF THE ARRAY IS POPULATED and there's no current clusterip
@@ -39,7 +43,11 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   // hooks for snapshot management
   // const { data: unfilteredSnapshots, refetch: refetchunfilteredSnapshots } =api.snapshot.getAll.useQuery() 
-  const [snapshotObj, setSnapshotObj] = useState({ Current: 'now' })
+  
+  console.log('snapshots filtered by IP',filteredByIPSnaps)
+  const updatedSnapshotObj:any = {}
+  filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
+  const [snapshotObj, setSnapshotObj] = useState({ ...updatedSnapshotObj, Current: 'now', })
 
   // hooks for tab deletion
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -106,7 +114,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     })
     
     // it does not -- but clicking on tabs DOES refresh the droptown
-    if(flag) handleUserClusterInteraction()
+    // if(flag) handleUserClusterInteraction()
 
     console.log('new snapshotObj', snapshotObj)
   }
@@ -160,6 +168,9 @@ const Dashboard: React.FC<DashboardProps> = ({
     // console.log('changedTimeStamp', changedTimeStamp)
     setCurrentTimeStamp(changedTimeStamp)
     // console.log('currentTimeStamp', currentTimeStamp)
+
+    refreshSnapsArray()
+    console.log()
   }
 
 
@@ -220,6 +231,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
 
+        {Object.keys(snapshotObj).length }
 
         {/* snapshot button */}
           {dashNum === 1 ? (
@@ -236,14 +248,24 @@ const Dashboard: React.FC<DashboardProps> = ({
 
           ) : ''}
         </div>
+        { dashNum === 1 ? (
+            <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
+            ) : dashNum === 2 && Object.keys(snapshotObj).length > 1 ? 
+            <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
 
-        {dashNum === 2 && Object.keys(snapshotObj).length > 1 ? (
-          <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
-        ) : dashNum === 1 ? (
-          <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
-        ) : (
-          <DashBlank />
-        )}
+                : (
+              <DashBlank />
+          )
+
+
+          // dashNum === 2 && Object.keys(snapshotObj).length >= 1 ? (
+          //   <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
+          // ) : dashNum === 1 ? (
+          //   <ChartContainer currentClusterIP={currentClusterIP} currentTimeStamp={currentTimeStamp} />
+          // ) : (
+          //   <DashBlank />
+          // )
+        }
       </div>
 
 {/* confirm delete ip modal */}

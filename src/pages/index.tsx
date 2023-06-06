@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   // const { data: clusterIPArray, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery();
   
   // test out use context with clusterIP
-  const {currentClusterIP, setCIP, clusterIPArray, refetchCIPArray} = useClusterContext();
+  const {currentClusterIP, setCIP, clusterIPArray, refetchCIPArray, } = useClusterContext();
   // setCIP(currentClusterIP)
 
   // refactored snapshotArr (array of objects) to snapshotObj (object) to keep track of our snapshots in our dropdown 
@@ -47,6 +47,8 @@ const Home: NextPage = () => {
 
             : ""
         }
+
+        
       </main>
       <footer className="footer items-center p-4 text-info/70 bg-gradient-to-br from-gray-800/60 to-base-100/60 opacity-60">
         <div className="items-center grid-flow-col ml-2 mr-2">
