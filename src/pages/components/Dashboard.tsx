@@ -5,7 +5,7 @@ import { DashBlank } from './DashBlank';
 import { api } from "~/utils/api";
 import { useClusterContext } from '../components/ClusterContext';
 
-
+import {Snapshot} from '@prisma/client'
 
 //type definition
 interface DashboardProps {
@@ -15,7 +15,6 @@ interface DashboardProps {
   snapshotObj: any;
   setSnapshotObj: any;
   dashNum: number;
-  currClusterId: string;
 }
 //type definition
 interface snapshotProps {
@@ -29,12 +28,12 @@ interface snapshotProps {
 
 }
 // helper to get snaps by IP
-function filterByIp (notFiltered:Array<snapshotProps>, ip:string) : Array<snapshotProps>{
+function filterByIp (notFiltered:Array<Snapshot>|undefined, ip:string) : Array<any>{
   if(notFiltered){
     const results = notFiltered.filter(el=>{
       return el.clusterIP === ip ? true : false
     });
-    // console.log('filtered',results)
+    // correctly map to snapshot interface instead of returning raw results?
   return results
   } else {
     // returns an empty array of "snaps"
@@ -100,11 +99,12 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   // combines clusterIP and associated snapshots deletion
   const confirmDeleteIP = async() => {
-    const clusterIPToDelete = clusterIPArray.find((obj) => obj.ipAddress === ipToDelete);
-    if (clusterIPToDelete) {
+    if (clusterIPArray) {
+      // any types to avoid empty object property access
+      const clusterIPToDelete:any = clusterIPArray.find((obj:any) => obj.ipAddress === ipToDelete);
       // wait for the snapshots to be deleted before deleting IPs
-      await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete.ipAddress });
-      deleteIP.mutate({ id: clusterIPToDelete.id });
+      await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete?.ipAddress });
+      deleteIP.mutate({ id: clusterIPToDelete?.id });
 
       // set state to remove old snapshots
       setSnapshotObj({})

@@ -22,6 +22,7 @@
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
     "daisyui": "^2.51.6",
+    "dotenv": "^16.1.4",
     "headlessui": "^0.0.0",
     "html2canvas": "^1.4.1",
     "next": "^13.4.1",

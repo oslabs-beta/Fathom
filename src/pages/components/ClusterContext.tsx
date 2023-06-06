@@ -9,7 +9,7 @@ type clusterContextType = {
     setCIP: (arg:string)=>void;
 
     // array of cluster IPS
-    clusterIPArray: {}[]|undefined; //array of objects
+    clusterIPArray: any[]; //array of any type of object
     // get cluster IP array
     refetchCIPArray: ()=>void;
 }
@@ -40,10 +40,13 @@ export function ClusterContext({ children }: Props) {
     }
 
     // state and update state (refetch from API)
-    const { data: clusterIPArray, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery();
+    const { data:  intermediateData, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery();
     const refetchCIPArray = () =>{
         refetchClusterIPArray()
     }
+
+    // type crutch to allow conditional value in case the api fetch is empty
+    let clusterIPArray = intermediateData ? intermediateData :[{}]
 
     // value object to provide to children
     const value= {
