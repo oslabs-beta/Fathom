@@ -122,7 +122,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 })
               ) : (
                 Object.keys(snapshotObj).map((ip) => (
-                  <option value={snapshotObj[ip]}>{ip}</option>
+                  <option value={snapshotObj[ip]} key={snapshotObj[ip]}>{ip}</option>
                 ))
               )}
             </select>

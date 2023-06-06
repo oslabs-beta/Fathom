@@ -11,35 +11,9 @@ import { DashBlankSignedOut } from 'src/pages/components/DashBlank'
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession()
-  const { data: clusterIPArray, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery();
+  const { data: clusterIPArray, refetch: refetchClusterIPArray } = api.clusterIP.getAll.useQuery<any, any>();
   console.log('the cluster IP', clusterIPArray)
 
-  // tRPC EXAMPLE START
-  // hook example on how to destructure an array of the snapshots,
-  // and a refetching function
-  const { data: snapshots, refetch: refetchSnaps } = api.snapshot.getAll.useQuery()
-
-  // hook example of new Mutation -
-  // call using  createNewSnapshot.mutate({unixtime:'newval'})
-  // hooks into the defined api in api/routers/snapshot.ts
-  const createNewSnapshot = api.snapshot.createNew.useMutation({
-    onSuccess: () => {
-      // refetchSnaps() // add void?
-      console.log('successfully created new snapshot')
-    }
-  });
-  // handlesubmit helper that uses the createNewSnapshot mutation/hook
-  const checkSnapshot = () => {
-    // creates new snapshot with that timestamp
-    // NOTE: userId is read automatically from the context(see snapshot.ts>createNew)
-    const newTimestamp = Date.now()
-    createNewSnapshot.mutate({
-      unixtime: String(newTimestamp)
-    })
-    refetchSnaps() // refetch and display snapshots
-    console.log('snaps later', snapshots)
-  }
-  // tRPC EXAMPLE END
   // refactored snapshotArr (array of objects) to snapshotObj (object) to keep track of our snapshots in our dropdown 
   // TODO load up snapshotObj from db according to user info 
   const [snapshotObj, setSnapshotObj] = useState({ Current: 'now' })
