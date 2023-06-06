@@ -74,6 +74,12 @@ const Dashboard: React.FC<DashboardProps> = ({
     setCurrentTimeStamp(changedTimeStamp);
   };
 
+  useEffect(() => {
+    if (!clusterIPArray.includes(currentClusterIP)) {
+      setCurrentClusterIP(clusterIPArray[0].ipAddress);
+    }
+  }, [clusterIPArray]);
+
   return (
     <>
       {/* {currentClusterIP} */}
