@@ -3,15 +3,15 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import ChartContainer from './ChartContainer';
 import { DashBlank } from './DashBlank';
 import { api } from "~/utils/api";
-import { useClusterContext } from '../components/ClusterContext';
+import { useClusterContext, defaultCluster } from '../components/ClusterContext';
 
-import {Snapshot} from '@prisma/client'
+import {ClusterIP, Snapshot} from '@prisma/client'
 
 //type definition
 interface DashboardProps {
   initialClusterIP: string;
-  clusterIPArray: Array<any>;
-  refetchClusterIPArray: any;
+  // clusterIPArray: Array<any>;
+  // refetchClusterIPArray: any;
   snapshotObj: any;
   setSnapshotObj: any;
   dashNum: number;
@@ -101,8 +101,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   const confirmDeleteIP = async() => {
     if (clusterIPArray) {
       // any types to avoid empty object property access
-      
-      const clusterIPToDelete:any = clusterIPArray.find((obj:any) => obj.ipAddress === ipToDelete);
+      const clusterIPToDelete:ClusterIP = clusterIPArray.find((obj:{ipAddress:string,[key:string]:any}) => obj.ipAddress === ipToDelete)??defaultCluster;
       // wait for the snapshots to be deleted before deleting IPs
       await deleteSnapshotsByIP.mutateAsync({ ipToDelete: clusterIPToDelete?.ipAddress });
       deleteIP.mutate({ id: clusterIPToDelete?.id });
@@ -166,13 +165,14 @@ const Dashboard: React.FC<DashboardProps> = ({
 
     // modify snapshotObj    
     // set snapshotObj to object with labels of labels, values
-    const updatedSnapshotObj:any = {}
-    filteredByIPSnaps.forEach(el=>{updatedSnapshotObj[el.label] = el.unixtime})
+    const updatedSnapshotObj:{[key:string]:any} = {}
+    
+    filteredByIPSnaps.forEach((el:{label:string, unixtime:number})=>{updatedSnapshotObj[el.label] = el.unixtime})
 
     // update the snapshot object with the new object
     await setSnapshotObj({...updatedSnapshotObj  })
     console.log(snapshotObj)
-  };
+  }
 
 
   // set currentTimeStamp state to option we choose on the dropbown

@@ -1,6 +1,10 @@
 // add a context provider for state management
 import {useState, createContext, ReactNode, useContext} from "react"
 import { api } from '~/utils/api';
+import {ClusterIP, Snapshot} from '@prisma/client'
+
+
+
 // define the type of the AppContext object
 type clusterContextType = {
     // current clusterIP
@@ -10,16 +14,19 @@ type clusterContextType = {
 
     // array of cluster IPS
     // typescript possible bugs here
-    clusterIPArray: any[]; //array of any type of object
+    clusterIPArray: ClusterIP[]; //array of any type of object should be ClusterIP
     // get cluster IP array
     refetchCIPArray: ()=>void;
 }
+
+export const defaultCluster:ClusterIP = {id:'', createdAt:new Date(), 
+updatedAt:new Date, ipAddress:'', userId:''}
 
 // to instantiate the context
 const clusterContextDefaults: clusterContextType = {
     currentClusterIP:'',
     setCIP: ()=>{null},
-    clusterIPArray: [{}], //array of objects
+    clusterIPArray: [defaultCluster], //array of objects
     refetchCIPArray: ()=>{null}, // get cluster IP array
 }
 
@@ -48,7 +55,7 @@ export function ClusterContext({ children }: Props) {
     }
 
     // type crutch to allow conditional value in case the api fetch is empty
-    const clusterIPArray = intermediateData ? intermediateData :[{}]
+    const clusterIPArray = intermediateData ? intermediateData :[defaultCluster]
 
     // value object to provide to children
     const value= {
