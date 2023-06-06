@@ -60,6 +60,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   const { data: sessionData } = useSession();
   
   // const [currentClusterIP, setCurrentClusterIP] = useState(initialClusterIP);
+  
   const {
     currentClusterIP, 
     setCIP: setCurrentClusterIP, 
@@ -190,7 +191,11 @@ const Dashboard: React.FC<DashboardProps> = ({
     setLabelName(event.target.value)
   }
 
-  
+  useEffect(() => {
+  if (clusterIPArray.length > 0) {
+    setCurrentClusterIP(clusterIPArray[0].ipAddress);
+  }
+}, []);
 
   return (
     <>
