@@ -194,10 +194,10 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   useEffect(() => {
   if (clusterIPArray.length > 0) {
-    let a:any = clusterIPArray[clusterIPArray.length-1];
+    const clusterresult:ClusterIP = clusterIPArray[clusterIPArray.length-1]??defaultCluster;
 
-    setCurrentClusterIP(a.ipAddress);
-    console.log('in the use effect with this clusterIP', a.ipAddress)
+    setCurrentClusterIP(clusterresult.ipAddress);
+    // console.log('in the use effect with this clusterIP', a.ipAddress)
   } 
   // setCurrentClusterIP(currentClusterIP);
 
@@ -246,7 +246,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                 })
               ) : (
                 Object.keys(snapshotObj).map((ip) => (
-                  <option value={snapshotObj[ip]}>{ip}</option>
+                  <option value={snapshotObj[ip] } key={snapshotObj[ip]}>{ip}</option>
                 ))
               )}
             </select>
