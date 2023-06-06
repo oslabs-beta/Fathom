@@ -193,9 +193,14 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   useEffect(() => {
   if (clusterIPArray.length > 0) {
-    setCurrentClusterIP(clusterIPArray[0].ipAddress);
-  }
-}, []);
+    let a:any = clusterIPArray[clusterIPArray.length-1];
+
+    setCurrentClusterIP(a.ipAddress);
+    console.log('in the use effect with this clusterIP', a.ipAddress)
+  } 
+  // setCurrentClusterIP(currentClusterIP);
+
+}, [clusterIPArray]);
 
   return (
     <>
