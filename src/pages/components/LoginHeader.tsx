@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import icon from '/src/pages/assets/Fathom-text-blue.png'
 
-export const LoginHeader: React.FC = () => {
+ const LoginHeader: React.FC = () => {
   const { data: sessionData } = useSession()
 
   return (
@@ -35,3 +35,5 @@ export const LoginHeader: React.FC = () => {
       </div></div>
   )
 }
+
+export default LoginHeader

@@ -1,4 +1,4 @@
-import { Chart } from 'src/pages/components/Chart'
+import  Chart  from 'src/pages/components/Chart'
 type ChartContainer = {
   currentClusterIP: string;
   currentTimeStamp: string;

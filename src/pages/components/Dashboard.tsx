@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import ChartContainer from './ChartContainer';
-import { DashBlank } from './DashBlank';
+import  DashBlank  from './DashBlank';
 import { api } from '~/utils/api';
 
 interface DashboardProps {

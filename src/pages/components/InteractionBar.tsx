@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react"
 import { api } from "~/utils/api";
 
 // TODO: define a type for InteractionBar props and import it instead of any
-export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: any) => {
+const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: any) => {
   const { data: sessionData } = useSession()
   const [inputIP, setInputIP] = useState('')
   const [isIPValid, setIsIPValid] = useState(true);
@@ -19,6 +19,7 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
       console.log('successfully saved clusterIP')
     }
   })
+
 
 // Update the input field value when inputIP changes
   useEffect(() => {
@@ -94,3 +95,5 @@ export const InteractionBar: any = ({ clusterIPArray, refetchClusterIPArray}: an
     </div>
   )
 }
+
+  export default InteractionBar
