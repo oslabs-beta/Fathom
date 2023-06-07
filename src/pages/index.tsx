@@ -17,6 +17,8 @@ const Home: NextPage = () => {
   // refactored snapshotArr (array of objects) to snapshotObj (object) to keep track of our snapshots in our dropdown 
   // TODO load up snapshotObj from db according to user info 
   const [snapshotObj, setSnapshotObj] = useState({ Current: 'now' })
+
+  
   return (
     <>
       <Head>

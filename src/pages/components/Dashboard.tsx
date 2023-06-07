@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import ChartContainer from './ChartContainer';
-import  DashBlank  from './DashBlank';
+import DashBlank from './DashBlank';
 import { api } from '~/utils/api';
 
 interface DashboardProps {
@@ -112,20 +112,21 @@ const Dashboard: React.FC<DashboardProps> = ({
               {dashNum === 1 ? 'Select Dashboard' : 'Select Snapshot'}
             </label>
             <select
-              tabIndex={0}
-              className="dropdown-content w-52 h-8 ml-1 mt-3 "
-              onChange={handleDashboardChange}
-            >
-              {dashNum === 2 ? (
-                Object.keys(snapshotObj).map((ip) => {
-                  if (ip !== 'Current') return <option value={snapshotObj[ip]}>{ip}</option>;
-                })
-              ) : (
-                Object.keys(snapshotObj).map((ip) => (
-                  <option value={snapshotObj[ip]} key={snapshotObj[ip]}>{ip}</option>
-                ))
-              )}
-            </select>
+  tabIndex={0}
+  className="dropdown-content w-52 h-8 ml-1 mt-3 "
+  onChange={handleDashboardChange}
+>
+  {dashNum === 2 ? (
+    snapshotObj && Object.keys(snapshotObj).map((ip) => {
+      if (ip !== 'Current') return <option value={snapshotObj[ip]}>{ip}</option>;
+    })
+  ) : (
+    snapshotObj && Object.keys(snapshotObj).map((ip) => (
+      <option value={snapshotObj[ip]} key={snapshotObj[ip]}>{ip}</option>
+    ))
+  )}
+  
+</select>
           </div>
           {dashNum === 1 ? (
             <div className="mr-3 mt-2">
