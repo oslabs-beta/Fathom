@@ -7,15 +7,6 @@ import {
 } from "~/server/api/trpc";
 
 export const snapshotRouter = createTRPCRouter({
-  // test procedure for checking that snapshot.ts is imported
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
     // queries and returns all snapshots
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.snapshot.findMany()
@@ -28,7 +19,7 @@ export const snapshotRouter = createTRPCRouter({
     .mutation(({ctx, input}) => {
     return ctx.prisma.snapshot.create({
         data: {
-          clusterIP:input.clusterIP,
+          clusterIP: input.clusterIP,
             unixtime: input.unixtime,
             userId: ctx.session?.user.id,
             
@@ -36,7 +27,4 @@ export const snapshotRouter = createTRPCRouter({
     })
   })
 
-//   getSecretMessage: protectedProcedure.query(() => {
-//     return "you can now see this secret message!";
-//   }),
 });
