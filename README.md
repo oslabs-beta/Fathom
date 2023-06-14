@@ -63,12 +63,8 @@ Make sure to take note of the Grafana external IP!
 
 ## Through Docker-hub
 1. Install/run [Docker desktop](https://www.docker.com/products/docker-desktop/)
-2. Pull the docker image `docker pull fathomforkubernetes/fathom-beta`
-3. Run the image passing in your oAuth Client_ID and Secret and exposing port 3000 `docker run <br> -e GITHUB_CLIENT_ID=<your_github_client_id> \
--e GOOGLE_CLIENT_ID=<your_google_client_id> \
--e GITHUB_CLIENT_SECRET=<your_github_client_secret> \
--e GOOGLE_CLIENT_SECRET=<your_google_client_secret> \
--p 3000:3000 fathomforkubernetes/fathom-beta:0.1`
+2. Pull the [docker image](https://hub.docker.com/r/fathomforkubernetes/fathom-beta) `docker pull fathomforkubernetes/fathom-beta`
+3. Run the image passing in your oAuth Client_ID and Secret and exposing port 3000 `docker run <br> -e GITHUB_CLIENT_ID=<your_github_client_id> \ -e GOOGLE_CLIENT_ID=<your_google_client_id> \ -e GITHUB_CLIENT_SECRET=<your_github_client_secret> \ -e GOOGLE_CLIENT_SECRET=<your_google_client_secret> \ -p 3000:3000 fathomforkubernetes/fathom-beta:0.1`
 4. visit the localhost address in a web browser
 5. Add the Grafana IP of the cluster you want to monitor
 
