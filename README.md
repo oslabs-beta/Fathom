@@ -81,23 +81,23 @@ Make sure to take note of the Grafana external IP!
 # Contributing
 We appreciate your interest in contributing to Fathom-for-Kubernetes! Whether you want to report a bug, propose new features, or submit improvements to the project, we welcome your contributions.
 
-To contribute to Fathom, please follow these guidelines:
+- To contribute to Fathom, please follow these guidelines:
 
-    Fork the repository and create your own branch for the feature/bug fix you intend to work on.
+- Fork the repository and create your own branch for the feature/bug fix you intend to work on.
 
-    Ensure that your code adheres to the project's coding conventions and style guidelines.
+- Ensure that your code adheres to the project's coding conventions and style guidelines.
 
-    Write clear, concise, and well-documented code. Include necessary comments to help others understand your contributions.
+- Write clear, concise, and well-documented code. Include necessary comments to help others understand your contributions.
 
-    Test your changes thoroughly to ensure they do not introduce any new issues and that existing functionality remains intact.
+- Test your changes thoroughly to ensure they do not introduce any new issues and that existing functionality remains intact.
 
-    Commit your changes and provide a descriptive and meaningful commit message.
+- Commit your changes and provide a descriptive and meaningful commit message.
 
-    Push your changes to your forked repository.
+- Push your changes to your forked repository.
 
-    Submit a pull request to the main repository, clearly outlining the purpose and details of your contribution. Include any relevant information that helps reviewers understand the context and purpose of your changes.
+- Submit a pull request to the main repository, clearly outlining the purpose and details of your contribution. Include any relevant information that helps reviewers understand the context and purpose of your changes.
 
-    Be responsive to feedback and actively participate in discussions related to your pull request.
+- Be responsive to feedback and actively participate in discussions related to your pull request.
 
 By contributing to Project Name, you agree that your contributions will be licensed under the [MIT LICENSE](License).
 
