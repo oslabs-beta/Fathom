@@ -41,13 +41,6 @@ For more information visit our [website](https//www.fathom.nyc)
 6. Dual Dashboard Display: Compare and contrast snapshots side by side with Fathom's dual dashboard display, enabling comprehensive analysis of multiple clusters.
 
 
-## Prerequisites
-Before you begin, ensure you have met the following requirements:
-
-Kubernetes cluster version 1.18 or higher
-kubectl version 1.18 or higher
-Docker installed (if running locally)
-
 # Getting Started
 
 Before you begin, set up your kubernetes cluster with Prometheus, Grafana as external services, and allow embedding - [Example Initializing on Google Kubernetes Engine](https://github.com/oslabs-beta/Fathom/blob/dev/clusterSetup.md) 
