@@ -41,6 +41,8 @@ For more information visit our [website](https//www.fathom.nyc)
 6. Dual Dashboard Display: Compare and contrast snapshots side by side with Fathom's dual dashboard display, enabling comprehensive analysis of multiple clusters.
 
 
+<br/>
+
 # Getting Started
 
 Before you begin, set up your kubernetes cluster with Prometheus, Grafana as external services, and allow embedding - [Example Initializing on Google Kubernetes Engine](https://github.com/oslabs-beta/Fathom/blob/dev/clusterSetup.md) 
@@ -67,6 +69,8 @@ Make sure to take note of the Grafana external IP!
 3. Add the Grafana IP of the cluster you want to monitor
 
 
+<br/>
+
 # Contributing
 We appreciate your interest in contributing to Fathom-for-Kubernetes! Whether you want to report a bug, propose new features, or submit improvements to the project, we welcome your contributions.
 
@@ -92,6 +96,8 @@ By contributing to Project Name, you agree that your contributions will be licen
 
 Thank you for your valuable contributions to Fathom! We greatly appreciate your help in making this project even better.
 
+
+<br/>
 
 # Fathom Team
 | Developed By       | Github          | LinkedIn        |
