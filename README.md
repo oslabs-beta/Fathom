@@ -77,7 +77,7 @@ Make sure to take note of the Grafana external IP!
 # Contributing
 We appreciate your interest in contributing to Fathom-for-Kubernetes! Whether you want to report a bug, propose new features, or submit improvements to the project, we welcome your contributions.
 
-- To contribute to Fathom, please follow these guidelines:
+To contribute to Fathom, please follow these guidelines:
 
 - Fork the repository and create your own branch for the feature/bug fix you intend to work on.
 
