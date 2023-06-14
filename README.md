@@ -3,7 +3,7 @@
 
 
 <p align="center">
-  <img width="350" src="./public/">
+  <img width="350" src="./public/fathom-full-white.png">
 </p>
 
 
