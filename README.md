@@ -9,7 +9,7 @@
 
 Fathom is an open-source application that provides comprehensive monitoring and analysis of Kubernetes metrics. With Fathom, you can easily monitor the performance and health of your Kubernetes clusters, compare metric snapshots, and gain insights across multiple clusters.
 
-For more information visit our [website](https//www.fathom.nyc)
+For more information visit our [website](https://www.fathom.nyc)
 
 <br/>
 
