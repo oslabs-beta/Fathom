@@ -45,7 +45,7 @@ For more information visit our [website](https://www.fathom.nyc)
 
 # Getting Started
 
-Before you begin, set up your kubernetes cluster with Prometheus, Grafana as external services, and allow embedding - [Example Initializing on Google Kubernetes Engine](https://github.com/oslabs-beta/Fathom/blob/dev/clusterSetup.md) 
+Before you begin, set up your kubernetes cluster with Prometheus, Grafana as external services, and allow embedding - [Example Initializing on Google Kubernetes Engine]([https://github.com/oslabs-beta/Fathom/blob/dev/clusterSetup.md](https://github.com/oslabs-beta/kubehawk/blob/main/clusterSetup.md#expose-prometheus-and-grafana-services)) 
 
 Make sure to take note of the Grafana external IP!
 
