@@ -66,7 +66,7 @@ Make sure to take note of the Grafana external IP!
 ## Through our website
 1. Visit our [application website](https://www.fathom.watch/)
 2. Allow insecure content from Site settings
-3. Add the Grafana IP of the cluster you want to monitor
+3. Add the Cluster IP of the cluster you want to monitor
 
 
 <br/>
